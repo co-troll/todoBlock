@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-const Button = () => {
+const Button = ({children}: {children:ReactNode}) => {
     return (
-        <button className='w-1/3 h-8 rounded-my bg-white justify-center'>로그인</button>
+        <button className='w-full h-8 rounded-2xl bg-purple-900/80 justify-center text-white text-lg'>{children}</button>
     )
 }
 

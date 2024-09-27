@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 const Input = ({ place }: { place: string }) => {
     return (
-        <input type='text' className='w-full h-8 rounded-my pl-2 placeholder:text-gray-400 placeholder:text-sm' placeholder={place} ></input>
+        <input type='text' className='w-full h-6 pl-1 bg-transparent border-b-[1px] border-black placeholder:text-gray-400 placeholder:text-sm focus:outline-none' placeholder={place} ></input>
     )
 }
 
