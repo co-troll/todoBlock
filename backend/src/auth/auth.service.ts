@@ -24,6 +24,14 @@ export class AuthService {
     };
   }
 
+  async socialLogin(user : any) {
+
+    const payload = {uid : user.nickname}
+
+    return this.jwtService.sign(payload)
+    
+  }
+
 
 
 }
