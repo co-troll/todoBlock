@@ -5,9 +5,8 @@ import SignupForm from '../moecules/SignupForm'
 
 const page = () => {
     return (
-        <div className='flex flex-col w-full h-screen bg-green-50 gap-7'>
-            <StackImg />
-            <div className='flex w-full text-black text-xl justify-center'>Sign up</div>
+        <div className='flex flex-col w-full h-screen bg-white gap-7'>
+            <StackImg className='h-2/5'/>
             <SignupForm />
         </div>
     )
