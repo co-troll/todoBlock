@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -24,4 +24,34 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+} */
+
+
+
+.search-icon {
+  font-size: 2.2em;
+  display: inline-block;
+  width: 0.4em;
+  box-sizing: content-box;
+  height: 0.4em;
+  border: 0.1em solid rgba(0, 166, 255, 0.641);
+  position: relative;
+  border-radius: 0.35em;
+}
+
+.search-icon:before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  right: -0.25em;
+  bottom: -0.1em;
+  border-width: 0;
+  background: rgba(0, 166, 255, 0.641);
+  width: 0.35em;
+  height: 0.08em;
+  transform: rotate(45deg);
+}
+
+.input-padding {
+  padding: 3px 6px;
 }
