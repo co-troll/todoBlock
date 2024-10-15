@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 
-const Input = ({ place }: { place: string }) => {
+const Input = ({ place,type,inputRef }: { place: string,type: string,inputRef: any }) => {
     return (
-        <input type='text' className='w-full h-8 rounded-my pl-2 placeholder:text-gray-400 placeholder:text-sm' placeholder={place} ></input>
+        <input type={type} className='w-full h-6 pl-1 bg-transparent border-b-[1px] border-black placeholder:text-gray-400 placeholder:text-sm focus:outline-none' placeholder={place} ref={inputRef}></input>
     )
 }
 
