@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-const Button = () => {
+const Button = ({ children,type,onClick }: { children: ReactNode,type:'submit' | 'button' | 'reset', onClick: any }) => {
     return (
-        <button className='w-1/3 h-8 rounded-my bg-white justify-center'>로그인</button>
+        <button type={type} onClick={onClick} className='w-full h-8 rounded-md bg-purple-900/80 justify-center text-white text-lg'>{children}</button>
     )
 }
 

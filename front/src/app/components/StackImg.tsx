@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-const StackImg = () => {
+const StackImg = ({className} : {className : string}) => {
     return (
-        <div className='w-full h-1/2 bg-gray-400 relative rounded-b-my'><Image fill src='/stack.png' alt='stack' className='rounded-b-my object-cover' /></div>
+        <div className={`w-full relative overflow-hidden ${className}`}><Image fill src='/stack.png' alt='stack' className='object-cover' /></div>
     )
 }
 
