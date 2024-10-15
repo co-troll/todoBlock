@@ -1,60 +1,50 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Group from "../components/Group";
 import Cube, { CubeDiffculty, CubeLength, CubePosition, CubeType } from "../components/Cube";
-import { CameraControls, OrbitControls, useTrail } from "@react-three/drei";
+import { Box, CameraControls, OrbitControls, OrthographicCamera, useTrail } from "@react-three/drei";
 import Book from "../components/Group";
+import { Physics, RigidBody } from "@react-three/rapier";
+import Camera from "../components/Camera";
 
 export default function Board () {
-  const [position, setPosition] = useState(0);
-  const [rotation, setRotation] = useState(0);
-  const cameraControlRef = useRef<CameraControls>(null!);
+  const [books, setBooks] = useState<Array<JSX.Element>>([]);
+  const [position, setPosition] = useState<number>(2);
+  const [clickScreenY, setClickScreenY] = useState<number>(0);
+  const [moveScreenY, setMoveScreenY] = useState<number>(0);
 
-  const handleUpButton = () => {
-    setPosition(position + 1);
-  }
-
-  const handleDownButton = () => {
-    position > 0 ? setPosition(position - 1) : "";
-  }
-
-  const handleRotateButton = () => {
-    rotation >= 270 ? setRotation(0) : setRotation(rotation + 90);
-  }
-
-
-  const RenderBooks = (count : number) => {
-    const arr = [];
-    for (let i = 0; i < count * 4; i = i + 4) {
-      arr.push(<Book position={i + position} rotation={rotation} key={`Book-${i}`} difficulty={CubeDiffculty.EASY} />);
-      arr.push(<Book position={i + position + 1} rotation={rotation} key={`Book-${i + 1}`} difficulty={CubeDiffculty.NORMAL} />);
-      arr.push(<Book position={i + position + 2} rotation={rotation} key={`Book-${i + 2}`} difficulty={CubeDiffculty.HARD} />);
-      arr.push(<Book position={i + position + 3} rotation={rotation} key={`Book-${i + 3}`} difficulty={CubeDiffculty.EXTRA} />);
-    }
-    return arr;
+  const handleCreateButton = () => {
+    setBooks([...books, <Book key={`Book-${books.length}`} name={`Book-${books.length}`} position={position} difficulty={CubeDiffculty.EASY} />])
+    setPosition(position + 0.8);
   }
 
   return (
-    <div className="h-screen">
-      <Canvas orthographic camera={{
-          zoom: 30,
-          far: 1000,
-          position: [10, 5 , 10],
-        }}>
+    <div className="h-[60vh] flex flex-col">
+      <Canvas 
+        onTouchStart={(e) => setClickScreenY(e.changedTouches[0].screenY)} 
+        onTouchMove={(e) => setMoveScreenY(e.changedTouches[0].screenY)}
+      >
+        <Camera clickScreenY={clickScreenY} moveScreenY={moveScreenY} />
         {/* <CameraControls ref={cameraControlRef} /> */}
-        {/* <OrbitControls/> */}
         {/* <axesHelper args={[5]} />
         <gridHelper args={[20, 20, 0xff0000, 'teal']} /> */}
         <color attach={"background"} args={["beige"]} />
         <ambientLight intensity={1} />
-        <directionalLight color={"white"} position={[-5, 5, 5]} />
-        {RenderBooks(5)}
+        <directionalLight color={"white"} position={[-20, 20, 20]} />
+        <Suspense>
+          <Physics debug>
+            {books}
+            <RigidBody type="fixed">
+              <Box position={[0, -5, 0]} args={[20, 1, 20]} >
+                <meshStandardMaterial color="springgreen" />
+              </Box>
+            </RigidBody>
+          </Physics>
+        </Suspense> 
       </Canvas>
-      <button onClick={handleUpButton}>상승</button>
-      <button onClick={handleDownButton}>하강</button>
-      <button onClick={handleRotateButton}>회전</button>
+      <button onClick={handleCreateButton}>생성</button>
     </div>
   );
 }
