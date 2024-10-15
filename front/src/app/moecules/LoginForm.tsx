@@ -18,7 +18,7 @@ const LoginForm = () => {
 
         const uid = uidInput.current.value;
         const upw = upwInput.current.value;
-        
+
         try {
             const response = await axios.post('http://localhost:4000/auth/login', { uid, upw });
 
@@ -28,11 +28,11 @@ const LoginForm = () => {
                 const token = response.data.token;
                 localStorage.setItem('authToken', token);
 
-                window.location.href = '/';
+                window.location.href = '/main';
             }
         }catch(error:any){
             if(error.response && error.response.status === 401){
-                alert('아이디 또는 비밀번호 오류');
+                alert('아이디 또는 비밀번호를 다시 확인해주세요.');
             }else{
                 alert('로그인 중 오류가 발생')
             }
