@@ -37,13 +37,13 @@ export class UsersController {
   }
 
   // 비밀번호 수정 (미)
-  @Patch('update/:id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   // 탈퇴 (미)
-  @Delete('delete/:id')
+  @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

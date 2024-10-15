@@ -6,6 +6,7 @@ import { UsersService } from 'src/users/users.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from 'src/users/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
+import { KakaoStratagy } from './kakao.strategy';
 
 @Module({
   imports : [
@@ -17,6 +18,6 @@ import { ConfigModule } from '@nestjs/config';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService],
+  providers: [AuthService, UsersService, KakaoStratagy],
 })
 export class AuthModule {}
