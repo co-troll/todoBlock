@@ -1,6 +1,6 @@
 'use client'
 
-
+import axios from 'axios'
 import React, { useEffect, useRef } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
@@ -17,16 +17,33 @@ const SignupForm = () => {
     const confirmPw = useRef<any>(null);
     const phoneNum = useRef<any>(null);
 
-    const SignupHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const uid = uidInput.current.value;
+    const upw = upwInput.current.value;
+    const rePw = confirmPw.current.value;
+    const uPhone = phoneNum.current.value;
+
+    const SignupHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const uid = uidInput.current.value;
-        const upw = upwInput.current.value;
-        const rePw = confirmPw.current.value;
-        const uPhone = phoneNum.current.value;
+        try{
+            const response = await axios.post('http://localhost:4000/users/signup', {
+                uid:uid,
+                upw:upw,
+                phoneNumber:uPhone,
+            });
+            console.log('회원가입 성공',response.data)
+            console.log(response)
+        }catch(error){
+            console.error('회원가입 실패', error)
+        }
+
+        // const uid = uidInput.current.value;
+        // const upw = upwInput.current.value;
+        // const rePw = confirmPw.current.value;
+        // const uPhone = phoneNum.current.value;
 
         // 정규식
-        const regexId = /^[a-z0-9]{8,16}$/;
+        const regexId = /^[a-z0-9]{6,16}$/;
         const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
         const regexPhone = /^01[016789]-\d{3,4}-\d{4}$/;
 
@@ -37,7 +54,7 @@ const SignupForm = () => {
         if (upw !== rePw) {
             alert('비밀번호가 일치하지 않습니다.')
         }else if(!isIdValid){
-            alert('아이디는 문자열로 이루어진 8글자~16글자만 가능합니다.')
+            alert('아이디는 문자열로 이루어진 6글자~16글자만 가능합니다.')
         }else if(!isPasswordValid ){
             alert('비밀번호는 영문,숫자 포함 8글자~16글자만 가능합니다.')
         }else if( isPhoneNumberValid ){
