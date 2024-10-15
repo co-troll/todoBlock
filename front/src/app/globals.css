@@ -55,3 +55,25 @@ body {
 .input-padding {
   padding: 3px 6px;
 }
+.input-padding2 {
+  padding: 8px 10px;
+}
+
+.todo_title::-webkit-details-marker {
+  display: none;
+}
+
+.date-box {
+  @apply w-32 h-9 border border-black text-base rounded-lg flex items-center justify-center mb-1
+}
+
+.date-dlt-btn {
+  @apply 
+  absolute top-1 right-0.5 w-6 h-6 items-center flex justify-center
+  before:w-5 before:h-1 before:bg-black before:rotate-45 before:absolute
+  after:w-5 after:h-1 after:bg-black after:-rotate-45 after:absolute
+}
+
+.box-height {
+  height: 400px;
+}
