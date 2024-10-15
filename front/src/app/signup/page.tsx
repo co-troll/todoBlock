@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import StackImg from '../components/StackImg'
-import Link from 'next/link'
 import SignupForm from '../moecules/SignupForm'
 
 const page = () => {
