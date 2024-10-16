@@ -8,6 +8,7 @@ import { Box, CameraControls, OrbitControls, OrthographicCamera, useTrail } from
 import Book from "../components/Group";
 import { Physics, RigidBody } from "@react-three/rapier";
 import Camera from "../components/Camera";
+import DraggableRigidBody, { DraggableRigidBodyProps } from "../components/DraggableRigidBody";
 
 export default function Board () {
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
@@ -21,7 +22,7 @@ export default function Board () {
   }
 
   return (
-    <div className="h-[60vh] flex flex-col">
+    <div className="h-full flex flex-col">
       <Canvas 
         onTouchStart={(e) => setClickScreenY(e.changedTouches[0].screenY)} 
         onTouchMove={(e) => setMoveScreenY(e.changedTouches[0].screenY)}
@@ -33,16 +34,14 @@ export default function Board () {
         <color attach={"background"} args={["beige"]} />
         <ambientLight intensity={1} />
         <directionalLight color={"white"} position={[-20, 20, 20]} />
-        <Suspense>
-          <Physics debug>
-            {books}
-            <RigidBody type="fixed">
-              <Box position={[0, -5, 0]} args={[20, 1, 20]} >
-                <meshStandardMaterial color="springgreen" />
-              </Box>
-            </RigidBody>
-          </Physics>
-        </Suspense> 
+        <Physics debug>
+          {books}
+          <RigidBody type="fixed">
+            <Box position={[0, -5, 0]} args={[20, 1, 20]} >
+              <meshStandardMaterial color="springgreen" />
+            </Box>
+          </RigidBody>
+        </Physics>
       </Canvas>
       <button onClick={handleCreateButton}>생성</button>
     </div>
