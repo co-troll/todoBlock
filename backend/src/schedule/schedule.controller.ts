@@ -22,6 +22,7 @@ export class ScheduleController {
     @Req() req : Request,
     @Res() res : Response,
   ) {
+    console.log(createScheduleDto.dateArr)
     const {uid} = req['uid'];
     await this.scheduleService.create(createScheduleDto, uid);
     return res.status(201).json({message : "스케줄 생성 성공"})
