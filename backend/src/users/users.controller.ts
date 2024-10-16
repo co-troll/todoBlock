@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,6 +6,7 @@ import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FindUserDto } from './dto/find-user.dto';
 import { RequestUserDto } from './dto/request-user-dto';
+import { JwtAuthGuard } from 'src/guards/jwtGuard';
 
 @ApiTags('회원가입 API')
 @Controller('users')
@@ -46,6 +47,21 @@ export class UsersController {
     @Body() findUserDto : FindUserDto
   ) {
     return await this.usersService.findUserID(findUserDto);
+  }
+
+  // 유저 아이디 전송
+  @ApiOperation({summary : "유저 아이디"})
+  @Get('getUid')
+  @UseGuards(JwtAuthGuard)
+  async getUid(
+    @Req() req : Request,
+  ) {
+    const {uid} = req['uid'];
+    if(!uid) {
+      return null;
+    }
+
+    return uid;
   }
 
   // 비밀번호 수정 요청
