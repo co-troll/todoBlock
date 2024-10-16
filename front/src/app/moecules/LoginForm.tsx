@@ -3,7 +3,6 @@
 import axios from 'axios'
 import React, { useRef } from 'react'
 import Input from '../components/Input'
-import Button from '../components/Button'
 import Link from 'next/link';
 
 const LoginForm = () => {
@@ -25,10 +24,11 @@ const LoginForm = () => {
             if(response.status === 200){
                 alert('로그인 성공');
 
-                const token = response.data.token;
-                localStorage.setItem('authToken', token);
+                // 로컬스토리지 쿠키생성? 필요없을듯.
+                // const token = response.data.token;
+                // localStorage.setItem('authToken', token);
 
-                window.location.href = '/main';
+                window.location.href = '/todolist';
             }
         }catch(error:any){
             if(error.response && error.response.status === 401){
@@ -37,8 +37,6 @@ const LoginForm = () => {
                 alert('로그인 중 오류가 발생')
             }
         }
-
-        
     }
 
     return (

@@ -5,11 +5,11 @@ import React, { useEffect, useRef } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import Link from 'next/link'
-import { useAtom } from 'jotai'
-import { userAtom } from '../state/userAtom'
+// import { useAtom } from 'jotai'
+// import { userAtom } from '../state/userAtom'
 
 const SignupForm = () => {
-    const [user, setUser] = useAtom(userAtom);
+    // const [user, setUser] = useAtom(userAtom);
 
     const uidInput = useRef<any>(null);
     const upwInput = useRef<any>(null);
@@ -27,7 +27,7 @@ const SignupForm = () => {
         // 정규식
         const regexId = /^[a-z0-9]{6,16}$/;
         const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
-        const regexPhone = /^01[016789]-\d{3,4}-\d{4}$/;
+        const regexPhone = /^01[016789]-?\d{3,4}-?\d{4}$/;
 
         const isIdValid = regexId.test(uid);
         const isPasswordValid = regexPassword.test(upw);
@@ -37,12 +37,12 @@ const SignupForm = () => {
             alert('비밀번호가 일치하지 않습니다.')
             return;
         } else if (!isIdValid) {
-            alert('아이디는 문자열로 이루어진 6글자~16글자만 가능합니다.')
+            alert('아이디는 영문과 숫자로 이루어진 6글자~16글자만 가능합니다.')
             return;
         } else if (!isPasswordValid) {
-            alert('비밀번호는 영문,숫자 포함 8글자~16글자만 가능합니다.')
+            alert('비밀번호는 영문,숫자 포함한 8글자~16글자만 가능합니다.')
             return;
-        } else if (isPhoneNumberValid) {
+        } else if (!isPhoneNumberValid) {
             alert('휴대폰 번호를 다시 확인해주세요.')
             return;
         }
@@ -54,7 +54,7 @@ const SignupForm = () => {
                 phoneNumber: uPhone,
             });
 
-            console.log('회원가입 성공', response.data)
+            alert('회원가입 성공, 로그인 페이지로 이동합니다.')
 
             window.location.href = '/login';
 
@@ -84,11 +84,11 @@ const SignupForm = () => {
         // }
     }
 
-    useEffect(() => {
-        if (user) {
-            console.log('user 업데이트', user);
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user) {
+    //         console.log('user 업데이트', user);
+    //     }
+    // }, [user])
 
     return (
         <div>
