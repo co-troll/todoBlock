@@ -4,6 +4,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FindUserDto } from './dto/find-user.dto';
+import { RequestUserDto } from './dto/request-user-dto';
 
 @ApiTags('회원가입 API')
 @Controller('users')
@@ -36,10 +38,32 @@ export class UsersController {
     return res.status(200).json({message : "No problem"})
   }
 
-  // 비밀번호 수정 (미)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  // 비밀번호 찾기
+  @ApiOperation({summary : "비밀번호 찾기"})
+  @ApiResponse({status : 201, description : "비밀번호가 없을 시 404에러 반환", type : FindUserDto})
+  @Post('findingpassword')
+  async findPassword(
+    @Body() findUserDto : FindUserDto
+  ) {
+    return await this.usersService.findUserID(findUserDto);
+  }
+
+  // 비밀번호 수정 요청
+  @ApiOperation({summary : "비밀번호 변경 페이지 이동 요청"})
+  @ApiResponse({status : 201, description : "아이디랑 비밀번호를 넘기면 일치여부 확인", type : RequestUserDto})
+  @Post('requestpasswordchange')
+  async requestChange(
+    @Body() requestUserDto : RequestUserDto
+  ) {
+    return await this.usersService.requestToChangePage(requestUserDto);
+  }
+
+  // 비밀번호 수정
+  @Patch(':uid')
+  @ApiOperation({summary : "비밀번호 변경"})
+  @ApiResponse({status : 201, type : UpdateUserDto})
+  update(@Param('uid') uid: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(uid, updateUserDto);
   }
 
   // 탈퇴 (미)
