@@ -125,7 +125,9 @@ const page = () => {
   }, [difficulty]);
 
   const onClickSave = () => {
-    
+    selectDate
+    difficulty
+
   }
 
   return (
@@ -135,7 +137,7 @@ const page = () => {
               <h1 className='text-2xl'>새 할일 리스트</h1>
             </div>
             <div className='w-full flex flex-col items-center mt-8'>
-                <textarea name="" id="" className='border border-black w-full h-24 input-padding2 text-lg'></textarea>
+                <textarea name="" id="content" className='border border-black w-full h-24 input-padding2 text-lg resize-none overflow-hidden'></textarea>
                 <div className='w-full relative mt-4'>
                   <div className='flex items-center h-14 border rounded-sm px-2' onClick={onClickCalendarIcon}>
                     <span>
@@ -143,16 +145,8 @@ const page = () => {
                     </span>
                     <span className='text-lg ml-1'>시간</span>
                   </div>
-                    <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'>
-                      <div className='date-box'>
-                        <div className='date-dlt-btn'></div>
-                      </div>
-                      <div className='date-box'></div>
-                      <div className='date-box'></div>
-                      <div className='date-box'></div>
-                      <div className='date-box'></div>
-                    </div>
-                  <Calendar className='calendar' onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
+                    <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'></div>
+                  <Calendar className='calendar ml-4' onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
                 </div>
                 <div className='w-full border h-14 border-black mt-3 flex items-center pl-4 text-lg'>
                   <span className='w-3/12'>
@@ -164,7 +158,7 @@ const page = () => {
                   <span className='w-3/12'>
                     <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal' onClick={selectDifficulty}>
                       <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
-                      <span data-difficulty='normal'>쉬움</span>
+                      <span data-difficulty='normal'>보통</span>
                     </div>
                   </span>
                   <span className='w-3/12'>
