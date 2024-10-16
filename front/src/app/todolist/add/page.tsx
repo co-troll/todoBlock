@@ -14,6 +14,10 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 const page = () => {
   const [date, setDate] = useState((new Date()));
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
+  const [selectDate, setSelectDate] = useState<string[]>([]);
+  const [isDateDelete, setisDeleteDate] = useState<boolean>(false);
+
+  const [difficulty, setDifficulty] = useState('');
 
   const formatDate = (date: Date) => {
     // 요일 배열을 정의 (일~토)
@@ -37,39 +41,92 @@ const page = () => {
 
     setDate(newValue);
     console.log(date)
+    setSelectDate([...selectDate, _newValue])
     setOpenCalendar(false);
-    const select = document.createElement('div');
-    const dltBtn = document.createElement('div');
-    dltBtn.classList.add('date-dlt-btn');
-    select.classList.add('date-box');
-    select.innerHTML = `${_newValue}`
-    select.append(dltBtn)
-    document.getElementById('dateBoxes')?.append(select);
   }, [date]);
 
-  // const onChangeDate2 = useCallback((newValue: any) => {
-  //   const _newValue = formatDate(newValue);
-  //   setDate2(newValue);
-  //   console.log(date)
-  //   setOpenCalendar(false);
-  //   setOpenCalendar2(false);
-  //   const select = document.getElementById('setDate2') as HTMLDivElement;
-  //   select.innerHTML = `${_newValue}`
-  // }, [date2]);
+  useEffect(() => {
+    if(!isDateDelete) {
+      console.log(selectDate);
+      (document.getElementById('dateBoxes') as HTMLDivElement).innerHTML = '';
+      for(let i = 0; i < selectDate.length; i++) {
+      const select = document.createElement('div');
+      const dltBtn = document.createElement('div');
+      dltBtn.classList.add('date-dlt-btn');
+      dltBtn.onclick = selectDateDelete
+      select.classList.add('date-box');
+      select.innerHTML = `${selectDate[i]}`
+      select.append(dltBtn);
+      (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
+      }
+    }else {
+      setisDeleteDate(false);
+    }
+  }, [selectDate])
+
+  const selectDateDelete = (e: any) => {
+    console.log(1);
+    let index = -1;
+    for(let i = 0; i < selectDate.length; i++) {
+      // console.log(1);
+      if(selectDate[i] === e.target.parentNode.innerHTML.split('<')[0]) {
+        index = i;
+      }
+    }
+    setisDeleteDate(true);
+    setSelectDate(selectDate.splice(index, 1));
+    (document.getElementById('dateBoxes') as HTMLDivElement).innerHTML = '';
+    for(let i = 0; i < selectDate.length; i++) {
+      const select = document.createElement('div');
+      const dltBtn = document.createElement('div');
+      dltBtn.classList.add('date-dlt-btn');
+      dltBtn.onclick = selectDateDelete
+      select.classList.add('date-box');
+      select.innerHTML = `${selectDate[i]}`
+      select.append(dltBtn);
+      (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
+    }
+    console.log(selectDate)
+  };
 
   const onClickCalendarIcon = () => {
     setOpenCalendar((prev) => !prev);
   }
 
-  const onClickSave = () => {
-    
+  useEffect(() => {
+    const calendar = document.querySelector('.calendar') as HTMLElement;
+    openCalendar ? calendar.style.display = "block" : calendar.style.display = "none";
+  }, [openCalendar]);
+
+  const selectDifficulty = (e: any) => {
+    // console.log(e.target.getAttribute('data-difficulty'));
+    setDifficulty(e.target.getAttribute('data-difficulty'));
   }
 
   useEffect(() => {
-    const calendar = document.querySelector('.calendar') as HTMLElement;
-    console.log("바뀜")
-    openCalendar ? calendar.style.display = "block" : calendar.style.display = "none";
-  }, [openCalendar]);
+    switch(difficulty) {
+      case "easy" :
+        (document.getElementById(`difficulty_${difficulty}`) as HTMLDivElement).style.backgroundColor = "gray";
+        (document.getElementById(`difficulty_normal`) as HTMLDivElement).style.backgroundColor = "white";
+        (document.getElementById(`difficulty_hard`) as HTMLDivElement).style.backgroundColor = "white";
+        break;
+      case "normal" :
+        (document.getElementById(`difficulty_${difficulty}`) as HTMLDivElement).style.backgroundColor = "gray";
+        (document.getElementById(`difficulty_easy`) as HTMLDivElement).style.backgroundColor = "white";
+        (document.getElementById(`difficulty_hard`) as HTMLDivElement).style.backgroundColor = "white";
+        break;
+      case "hard" :
+        (document.getElementById(`difficulty_${difficulty}`) as HTMLDivElement).style.backgroundColor = "gray";
+        (document.getElementById(`difficulty_easy`) as HTMLDivElement).style.backgroundColor = "white";
+        (document.getElementById(`difficulty_normal`) as HTMLDivElement).style.backgroundColor = "white";
+        break;
+    }
+    console.log(difficulty);
+  }, [difficulty]);
+
+  const onClickSave = () => {
+    
+  }
 
   return (
     <div className='w-full flex justify-center'>
@@ -87,7 +144,7 @@ const page = () => {
                     <span className='text-lg ml-1'>시간</span>
                   </div>
                     <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'>
-                      <div className='date-box relative'>
+                      <div className='date-box'>
                         <div className='date-dlt-btn'></div>
                       </div>
                       <div className='date-box'></div>
@@ -97,27 +154,39 @@ const page = () => {
                     </div>
                   <Calendar className='calendar' onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
                 </div>
-                <div className='w-full border border-black mt-3 flex pl-4 text-lg'>
+                <div className='w-full border h-14 border-black mt-3 flex items-center pl-4 text-lg'>
                   <span className='w-3/12'>
-                    <div className='w-8/12 h-12 flex items-center cursor-pointer'>
-                      <div className='w-4 h-4 border border-black bg-yellow-400 mr-1'></div>
-                      <span>쉬움</span>
+                    <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_easy' data-difficulty='easy' onClick={selectDifficulty}>
+                      <div className='w-4 h-4 border border-black bg-yellow-400 mr-1' data-difficulty='easy'></div>
+                      <span data-difficulty='easy'>쉬움</span>
                     </div>
                   </span>
-                  <span className='w-3/12 h-12 flex items-center'>
-                    <div className='w-4 h-4 border border-black bg-green-400 mr-1'></div>
-                    <span>보통</span>
+                  <span className='w-3/12'>
+                    <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal' onClick={selectDifficulty}>
+                      <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
+                      <span data-difficulty='normal'>쉬움</span>
+                    </div>
                   </span>
-                  <span className='w-3/12 h-12 flex items-center'>
-                    <div className='w-4 h-4 border border-black bg-red-400 mr-1'></div>
-                    <span>어려움</span>
+                  <span className='w-3/12'>
+                    <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_hard' data-difficulty='hard' onClick={selectDifficulty}>
+                      <div className='w-4 h-4 border border-black bg-red-400 mr-1' data-difficulty='hard'></div>
+                      <span data-difficulty='hard'>어려움</span>
+                    </div>
                   </span>
+                  {/* <span className='w-3/12 h-12 flex items-center' data-difficulty='normal' onClick={selectDifficulty}>
+                    <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
+                    <span data-difficulty='normal'>보통</span>
+                  </span>
+                  <span className='w-3/12 h-12 flex items-center' data-difficulty='hard' onClick={selectDifficulty}>
+                    <div className='w-4 h-4 border border-black bg-red-400 mr-1'data-difficulty='hard'></div>
+                    <span data-difficulty='hard'>어려움</span>
+                  </span> */}
                 </div>
             </div>
-            {/* <div className='w-full fixed flex bottom-0 left-0 justify-between border border-black'>
+            <div className='w-full fixed flex bottom-0 left-0 justify-between border border-black'>
               <Link href={'/todolist'} className='w-6/12 h-14 border border-black flex items-center justify-center'>취소</Link>
               <div onClick={onClickSave} className='w-6/12 h-14 border border-black flex items-center justify-center'>저장</div>
-            </div> */}
+            </div>
         </div>
     </div>
   )
