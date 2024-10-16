@@ -50,8 +50,8 @@ export class UsersController {
   }
 
   // 유저 아이디 전송
-  @ApiOperation({summary : "유저 아이디"})
-  @Get('getUid')
+  @ApiOperation({summary : "유저 아이디 습득"})
+  @Get('getuid')
   @UseGuards(JwtAuthGuard)
   async getUid(
     @Req() req : Request,
