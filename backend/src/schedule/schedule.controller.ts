@@ -59,9 +59,9 @@ export class ScheduleController {
     return await this.scheduleService.findOne(+index, uid);
   }
 
-  // 게시물 수정
+ // 게시물 수정
   @ApiOperation({summary : "스케줄 수정"})
-  @ApiResponse({status : 200, description : "스케줄 변경 성공"})
+  @ApiResponse({status : 200, description : "스케줄 변경 성공", type : CreateScheduleDto})
   @ApiResponse({status : 401, description : "유효하지 않은 토큰 사용"})
   @Patch('update/:index')
   @UseGuards(JwtAuthGuard)
@@ -73,7 +73,7 @@ export class ScheduleController {
     // const {uid} = req['uid'];
     // await this.scheduleService.findOne(+index, uid) // 게시물 작성자와 수정하려는 사람이 같은지 확인용
     await this.scheduleService.update(+index, createScheduleDto);
-    return `변경후 내용: ${createScheduleDto.content}`;
+    return `변경후 내용: [${createScheduleDto.content}] [${createScheduleDto.dateArr}] [${createScheduleDto.difficulty}]`;
   }
 
   // 스케줄 완료여부 수정
