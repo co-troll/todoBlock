@@ -29,6 +29,20 @@ export class Schedule extends Model<Schedule> {
     })
     content!:string;
 
+    // 날짜배열
+    @Column({
+        type : DataType.JSON,
+        allowNull: true
+    })
+    dateArr:string[];
+    
+    // 난이도
+    @Column({
+        type : DataType.STRING,
+        allowNull : false
+    })
+    difficulty! : string;
+
     // 완료 여부
     @Column({
         type: DataType.BOOLEAN,

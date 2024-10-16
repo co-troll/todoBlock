@@ -16,7 +16,13 @@ export class ScheduleService {
   // 스케줄 생성 로직
   async create(createScheduleDto: CreateScheduleDto, uid : string) {
     try {
-      await this.ScheduleEntity.create({uid, content : createScheduleDto.content, isFinished : false});
+      await this.ScheduleEntity.create({
+        uid,
+        content : createScheduleDto.content,
+        isFinished : false,
+        dateArr : createScheduleDto.dateArr,
+        difficulty: createScheduleDto.difficulty
+      });
     } catch (error) {
       console.log(error);
       throw error
