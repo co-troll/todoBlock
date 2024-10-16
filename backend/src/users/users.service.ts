@@ -1,10 +1,12 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UniqueConstraintError } from 'sequelize';
 import * as bcrypt from 'bcrypt';
+import { FindUserDto } from './dto/find-user.dto';
+import { RequestUserDto } from './dto/request-user-dto';
 
 @Injectable()
 export class UsersService {
@@ -61,8 +63,42 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  // 핸드폰 번호로 비밀번호를 찾음
+  async findUserID(findUserDto : FindUserDto) {
+    const userData = await this.UserEntity.findOne({where : {phoneNumber : findUserDto.phoneNumber }, attributes : ['uid']})
+    if (userData) {
+      return userData;  // userData 자체가 { uid: 'value' } 형태
+    } else {
+      throw new NotFoundException('User not found');
+    }
+  }
+
+  // 핸드폰 번호랑 아이디랑 일치여부 확인해서 비밀번호 변경창으로 간다
+  async requestToChangePage(requestUserDto : RequestUserDto) {
+    const userData = await this.UserEntity.findOne({where : {uid : requestUserDto.uid}, attributes : ['phoneNumber']})
+    if(!userData) {
+      throw new NotFoundException('User not found');
+    } else if (userData.phoneNumber !== requestUserDto.phoneNumber) {
+      throw new UnauthorizedException('phoneNumber does not match')
+    } else {
+      return "유저확인이 완료되었습니다.";
+    }
+  }
+
+  // 비밀번호 업데이트
+  async update(uid: string, updateUserDto: UpdateUserDto) {
+    const hashPassword = await this.hashPassword(updateUserDto.upw);
+
+    const updateUser = await this.UserEntity.update(
+      { upw : hashPassword },
+      { where : {uid} }
+    )
+
+    if (updateUser[0] === 0) {
+      throw new NotFoundException('User not found');
+    }
+  
+    return { message: 'Password updated successfully' };
   }
 
   remove(id: number) {
