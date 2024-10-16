@@ -1,0 +1,23 @@
+.backBtn::after{
+    position:absolute;
+    content:' ';
+    width:2px;
+    height:12px;
+    background-color: black;
+    transform:rotate(45deg);
+    top:15px;
+    left:25px;
+    border-radius: 1px;
+}
+
+.backBtn::before{
+    position:absolute;
+    content:' ';
+    width:2px;
+    height:12px;
+    background-color: black;
+    transform:rotate(135deg);
+    top:22.5px;
+    left:25px;
+    border-radius: 1px;
+}

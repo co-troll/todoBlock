@@ -16,6 +16,24 @@ const SignupForm = () => {
     const confirmPw = useRef<any>(null);
     const phoneNum = useRef<any>(null);
 
+    const idCheck = async (e: React.FormEvent<HTMLFormElement>) => {
+        const uid = uidInput.current.value;
+
+        try{
+            const params = {uid : uid}
+            const response = await axios.get('http://localhost:4000/users/check', {params})
+
+            response.data
+            console.log(response)
+
+            if(response.data.status === 200){
+
+            }
+        }catch(error){
+            console.error('error발생', error)
+        }
+    }
+
     const SignupHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -47,6 +65,7 @@ const SignupForm = () => {
             return;
         }
 
+        
         try {
             const response = await axios.post('http://localhost:4000/users/signup', {
                 uid: uid,
@@ -92,9 +111,10 @@ const SignupForm = () => {
 
     return (
         <div>
-            <form className='flex flex-col px-6 gap-3 items-center'>
+            <form className='flex flex-col px-6 gap-3 items-center relative'>
                 <label className='flex w-full h-5 text-[28px] items-center'>아이디</label>
                 <Input type='text' place='아이디를 입력하세요.' inputRef={uidInput} />
+                <button type='button' className='w-16 h-8 absolute text-white rounded-md border-2 border-none bg-purple-900/80 right-6 top-6'>중복 확인</button>
                 <label className='flex w-full h-5 text-2xl items-center'>비밀번호</label>
                 <Input type='password' place='비밀번호를 입력하세요.' inputRef={upwInput} />
                 <label className='flex w-full h-5 text-2xl items-center'>비밀번호 확인</label>
