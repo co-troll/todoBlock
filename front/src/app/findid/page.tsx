@@ -1,11 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import BackDiv from '../components/BackDiv'
 import Line from '../components/Line'
 import { useRouter } from 'next/navigation';
 import { useAtom } from 'jotai';
 import { urlAtom } from '../state/Atom';
+import Findid from '../moecules/Findid';
 import axios from 'axios';
 
 const page = () => {
@@ -24,15 +25,29 @@ const page = () => {
         router.push('/findid')
     }
 
-    const findBtn = () => {
 
-        const response = axios.post('')
-        router.push('findid/userid')
+    const phoneInput = useRef<any>(null);
+
+    const findBtn = async () => {
+        const phoneValue = phoneInput.current.value;
+
+        try {
+            const response = await axios.post('http://localhost:4000/users/findingpassword', { phoneNumber: phoneValue })
+            console.log(response.data)
+            if (response.data){
+                router.push('findid/userid')
+            }else{
+                console.log('오류 발생')
+            }
+            
+        } catch (error) {
+            console.error('에러 발생', error)
+        }
     }
 
     return (
         <div className='flex flex-col gap-5'>
-            <BackDiv text='아이디 / 비밀번호 찾기'/>
+            <BackDiv text='아이디 / 비밀번호 찾기' />
             <div className='flex flex-col gap-2'>
                 <div className='flex text-xl'>
                     <div className='w-1/2 flex flex-col items-center text-purple-900 hover:cursor-pointer' onClick={toFindId}>
@@ -47,7 +62,7 @@ const page = () => {
             </div>
             <div className='flex flex-col gap-5 px-10 pt-5'>
                 <div className='flex gap-1'>
-                    <input type='text' placeholder='휴대전화번호 입력(`-`제외)' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none'></input>
+                    <input type='text' ref={phoneInput} placeholder='휴대전화번호 입력(`-`제외)' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none'></input>
                     <button className='w-1/4 h-10 border-[1px] border-purple-900 rounded-full text-sm font-bold text-purple-900'>인증번호 전송</button>
                 </div>
                 <div className='flex gap-1'>
@@ -56,6 +71,7 @@ const page = () => {
                 </div>
                 <button className='w-full h-10 rounded-full bg-purple-900 text-white' onClick={findBtn}>아이디 찾기</button>
             </div>
+            {/* <Findid /> */}
         </div>
     )
 }
