@@ -11,18 +11,43 @@ import Camera from "../components/Camera";
 import DraggableRigidBody, { DraggableRigidBodyProps } from "../components/DraggableRigidBody";
 
 export default function Board () {
+  const [bookList, setBookList] = useState<Array<string>>([]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
   const [position, setPosition] = useState<number>(2);
   const [clickScreenY, setClickScreenY] = useState<number>(0);
   const [moveScreenY, setMoveScreenY] = useState<number>(0);
+  const input = useRef<HTMLInputElement>(null!);
+
+  // const bookList = ["11", "22", "33", "44"];
+  
+  useEffect(() => {
+    setTimeout(() => {
+      if (books.length >= bookList.length) {
+          return;
+      }
+      setBooks([...books, <Book key={`Book-${books.length}`} name={`Book-${bookList[books.length]}`} parentFunc={parentFunc} position={position} difficulty={CubeDiffculty.EASY} />])
+      setPosition(position + 0.8);
+    }, 100)
+  }, [books])
+
+  const parentFunc = (data: string) => {
+    console.log(data);
+    bookList.splice(bookList.findIndex((value) => value === data.split("-")[1]), 1);
+    setBooks([]);
+    setPosition(2);
+    setBookList([...bookList]);
+  }
 
   const handleCreateButton = () => {
-    setBooks([...books, <Book key={`Book-${books.length}`} name={`Book-${books.length}`} position={position} difficulty={CubeDiffculty.EASY} />])
-    setPosition(position + 0.8);
+    setBooks([]);
+    setPosition(2);
+    setBookList([...bookList, input.current.value]);
+    // setBooks([...books, <Book key={`Book-${books.length}`} name={`Book-${books.length}`} position={position} difficulty={CubeDiffculty.EASY} />])
+    // setPosition(position + 0.8);
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-screen flex flex-col">
       <Canvas 
         onTouchStart={(e) => setClickScreenY(e.changedTouches[0].screenY)} 
         onTouchMove={(e) => setMoveScreenY(e.changedTouches[0].screenY)}
@@ -43,6 +68,7 @@ export default function Board () {
           </RigidBody>
         </Physics>
       </Canvas>
+      <input ref={input} />
       <button onClick={handleCreateButton}>생성</button>
     </div>
   );
