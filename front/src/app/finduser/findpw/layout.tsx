@@ -5,10 +5,9 @@ const nanum = Nanum_Pen_Script({ weight: ['400'], preload:false, display: 'swap'
 
 const layout = ({ children }: { children: ReactNode }) => {
     return (
-        <div className={nanum.className}>
-            {children}
-        </div>
+            <div className={nanum.className}>
+                {children}
+            </div>
     )
 }
-
 export default layout
