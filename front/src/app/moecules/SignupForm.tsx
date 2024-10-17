@@ -49,7 +49,7 @@ const SignupForm = () => {
 
         // 정규식
         const regexId = /^[a-z0-9]{6,16}$/;
-        const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
+        const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
         const regexPhone = /^01[016789]-?\d{3,4}-?\d{4}$/;
 
         const isIdValid = regexId.test(uid);
@@ -63,7 +63,7 @@ const SignupForm = () => {
             alert('아이디는 영문과 숫자로 이루어진 6글자~16글자만 가능합니다.')
             return;
         } else if (!isPasswordValid) {
-            alert('비밀번호는 영문,숫자 포함한 8글자~16글자만 가능합니다.')
+            alert('비밀번호는 문자,숫자 포함 6글자~16글자만 가능합니다.')
             return;
         } else if (!isPhoneNumberValid) {
             alert('휴대폰 번호를 다시 확인해주세요.')
@@ -108,16 +108,16 @@ const SignupForm = () => {
                         사용 불가능한 아이디입니다.
                     </p>
                 )}
-                <Input type='text' place='아이디를 입력하세요.' inputRef={uidInput} />
+                <Input type='text' place='아이디 입력(6~16자)' inputRef={uidInput} />
                 <button type='button' onClick={idCheck} className='w-16 h-8 absolute text-white rounded-md border-2 border-none bg-purple-900/80 right-6 top-6'>중복 확인</button>
                 <label className='flex w-full h-5 text-2xl items-center'>비밀번호</label>
-                <Input type='password' place='비밀번호를 입력하세요.' inputRef={upwInput} />
+                <Input type='password' place='비밀번호 입력(문자, 숫자 포함 6~16자)' inputRef={upwInput} />
                 <label className='flex w-full h-5 text-2xl items-center'>비밀번호 확인</label>
-                <Input type='password' place='비밀번호를 한번 더 입력하세요.' inputRef={confirmPw} />
+                <Input type='password' place='비밀번호 재입력' inputRef={confirmPw} />
                 <label className='flex w-full h-5 text-2xl items-center'>휴대폰 번호</label>
-                <Input type='text' place='휴대폰번호를 입력하세요.' inputRef={phoneNum} />
+                <Input type='text' place='휴대폰 번호 입력(`-`제외 입력)' inputRef={phoneNum} />
                 <Button type='submit' onClick={SignupHandler} children='회원가입' />
-                <Link href='/login' children='돌아가기' className='flex w-full h-8 rounded-md bg-purple-900/80 justify-center text-white text-lg' />
+                <Link href='/login' children='돌아가기' className='flex w-full h-9 rounded-md bg-purple-900/80 justify-center text-white text-lg items-center' />
             </form>
         </div>
     )

@@ -45,8 +45,8 @@ const LoginForm = () => {
                 <Input type='text' place='아이디를 입력하세요' inputRef={uidInput} />
                 <label className='flex w-full h-6 text-2xl items-center'>비밀번호</label>
                 <Input type='password' place='비밀번호를 입력하세요' inputRef={upwInput} />
-                <button className='flex w-full h-8 rounded-md bg-purple-900/80 justify-center text-white text-lg'>로그인</button>
-                <Link href='/signup' children='회원가입' className='flex w-full h-8 rounded-md bg-purple-900/80 justify-center text-white text-lg' />
+                <button className='flex w-full h-9 rounded-md bg-purple-900/80 justify-center text-white text-xl items-center'>로그인</button>
+                <Link href='/signup' children='회원가입' className='flex w-full h-9 rounded-md bg-purple-900/80 justify-center text-white text-xl items-center' />
             </form>
         </div>
     )
