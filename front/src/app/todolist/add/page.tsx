@@ -7,6 +7,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'
 import Link from 'next/link';
 import ClockImage from '../../../../public/clock.png';
+import axios from 'axios';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -125,9 +126,11 @@ const page = () => {
   }, [difficulty]);
 
   const onClickSave = () => {
-    selectDate
-    difficulty
-
+    axios.post('http://localhost:4000/schedule', {
+      content: (document.getElementById('content') as HTMLDivElement).innerHTML,
+      dateArr: selectDate,
+      difficulty
+    });
   }
 
   return (
