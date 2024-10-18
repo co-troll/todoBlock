@@ -6,6 +6,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthenticationAuthDto } from './dto/authentication-auth.dto';
 import { FindUserDto } from './dto/find-user.dto';
+import { FindPasswordDto } from './dto/find-password.dto';
 
 @ApiTags('로그인 API')
 @Controller('auth')
@@ -78,9 +79,9 @@ export class AuthController {
     @ApiResponse({status : 201, description : "아이디랑 핸드폰 번호가 같으면 인증번호를 사용자에게 보냄"})
     @Post('checkpassword')
     async findUid (
-      @Body() findUserDto : FindUserDto
+      @Body() findPasswordDto : FindPasswordDto
     ) {
-      return this.authService.passwordCheck(findUserDto.uid, findUserDto.phoneNumber);
+      return this.authService.passwordCheck(findPasswordDto.uid, findPasswordDto.phoneNumber);
     }
 
 
