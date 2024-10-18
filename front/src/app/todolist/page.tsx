@@ -1,8 +1,23 @@
-import Link from 'next/link'
-import React from 'react'
+'use client'
+import { useQueries, useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const page = () => {
 
+  const getTodoList = useQuery({
+    queryKey: ['todolist'],
+    queryFn: async () => {
+      const response = await axios.get('http://localhost:4000/schedule/view', {
+        withCredentials: true
+      });
+      console.log(response.data);
+      return await response.data;
+    }
+  })
+
+  const [todoList, setTodoList] = useState([]);
   return (
     <>
       <div className='w-full flex justify-center'>
@@ -15,7 +30,7 @@ const page = () => {
             <div className='w-full mt-8 border border-black'>
               <h1 className='p-2'>해야 할 일</h1>
               <div className='w-full'>
-                <div className='w-full border-black border'>
+                <div id='todoBoxes' className='w-full border-black border'>
                   <div className='w-full flex'>
                     <span className='w-10 flex justify-center items-center h-10'>
                       <div className='w-7 h-7 rounded-full border border-black'></div>
