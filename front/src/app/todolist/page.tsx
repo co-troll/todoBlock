@@ -3,10 +3,6 @@ import React from 'react'
 
 const page = () => {
 
-  const openMenu = () => {
-    
-  }
-
   return (
     <>
       <div className='w-full flex justify-center'>

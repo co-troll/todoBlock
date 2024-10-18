@@ -8,6 +8,8 @@ import 'react-calendar/dist/Calendar.css'
 import Link from 'next/link';
 import ClockImage from '../../../../public/clock.png';
 import axios from 'axios';
+import WriteTodoBtn from '@/app/components/WriteTodoBtn';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -17,6 +19,7 @@ const page = () => {
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [selectDate, setSelectDate] = useState<string[]>([]);
   const [isDateDelete, setisDeleteDate] = useState<boolean>(false);
+  const [content, setContent] = useState<string>('');
 
   const [difficulty, setDifficulty] = useState('');
 
@@ -36,6 +39,10 @@ const page = () => {
     return `${year}.${month}.${day} (${dayOfWeek})`;
   };
 
+  const onChangeContent = useCallback((e: any) => {
+    setContent(e.target.value);
+  }, [content])
+
   const onChangeDate = useCallback((newValue: any) => {
     
     const _newValue = formatDate(newValue);
@@ -48,7 +55,6 @@ const page = () => {
 
   useEffect(() => {
     if(!isDateDelete) {
-      console.log(selectDate);
       (document.getElementById('dateBoxes') as HTMLDivElement).innerHTML = '';
       for(let i = 0; i < selectDate.length; i++) {
       const select = document.createElement('div');
@@ -125,14 +131,6 @@ const page = () => {
     console.log(difficulty);
   }, [difficulty]);
 
-  const onClickSave = () => {
-    axios.post('http://localhost:4000/schedule', {
-      content: (document.getElementById('content') as HTMLDivElement).innerHTML,
-      dateArr: selectDate,
-      difficulty
-    });
-  }
-
   return (
     <div className='w-full flex justify-center'>
         <div className='w-11/12'>
@@ -140,7 +138,7 @@ const page = () => {
               <h1 className='text-2xl'>새 할일 리스트</h1>
             </div>
             <div className='w-full flex flex-col items-center mt-8'>
-                <textarea name="" id="content" className='border border-black w-full h-24 input-padding2 text-lg resize-none overflow-hidden'></textarea>
+                <textarea name="" id="content" onChange={onChangeContent} className='border border-black w-full h-24 input-padding2 text-lg resize-none overflow-hidden'></textarea>
                 <div className='w-full relative mt-4'>
                   <div className='flex items-center h-14 border rounded-sm px-2' onClick={onClickCalendarIcon}>
                     <span>
@@ -182,7 +180,7 @@ const page = () => {
             </div>
             <div className='w-full fixed flex bottom-0 left-0 justify-between border border-black'>
               <Link href={'/todolist'} className='w-6/12 h-14 border border-black flex items-center justify-center'>취소</Link>
-              <div onClick={onClickSave} className='w-6/12 h-14 border border-black flex items-center justify-center'>저장</div>
+              <WriteTodoBtn content={content} dateArr={selectDate} difficulty={difficulty} />
             </div>
         </div>
     </div>
