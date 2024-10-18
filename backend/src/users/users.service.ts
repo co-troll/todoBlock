@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UniqueConstraintError } from 'sequelize';
 import * as bcrypt from 'bcrypt';
-import { FindUserDto } from './dto/find-user.dto';
 import { RequestUserDto } from './dto/request-user-dto';
 
 @Injectable()
@@ -63,11 +62,11 @@ export class UsersService {
     return user;
   }
 
-  // 핸드폰 번호로 아이디를 찾음
+  // 핸드폰 번호로 데이터베이스 상의 아이디를 찾음
   async findUserID(phoneNumber : string) {
     const userData = await this.UserEntity.findOne({where : { phoneNumber }, attributes : ['uid']})
     if (userData) {
-      return userData;  // userData 자체가 { uid: 'value' } 형태
+      return userData.uid;  // userData 자체가 { uid: 'value' } 형태
     } else {
       throw new NotFoundException('User not found');
     }

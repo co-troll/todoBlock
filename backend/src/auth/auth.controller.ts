@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req 
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { Response } from 'express';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthenticationAuthDto } from './dto/authentication-auth.dto';
+import { FindUserDto } from './dto/find-user.dto';
 
 @ApiTags('로그인 API')
 @Controller('auth')
@@ -62,14 +63,34 @@ export class AuthController {
     res.status(200).json({message : "소셜 로그인 성공"})
   }
 
+    // 아이디 찾기
+    @ApiOperation({summary : "아이디찾기"})
+    @ApiResponse({status : 201, description : "핸드폰 번호를 보내면 아이디 전송"})
+    @Post('finduid')
+    async checkUid(
+      @Body() findUserDto : FindUserDto
+    ) {
+      return await this.authService.findUid(findUserDto.phoneNumber);
+    }
+
+    // 아이디랑 핸드폰 번호 보내면 둘이 일치하는지 보고 인증번호 보냄
+    @ApiOperation({summary : "비밀번호 찾기 "})
+    @ApiResponse({status : 201, description : "아이디랑 핸드폰 번호가 같으면 인증번호를 사용자에게 보냄"})
+    @Post('checkpassword')
+    async findUid (
+      @Body() findUserDto : FindUserDto
+    ) {
+      return this.authService.passwordCheck(findUserDto.uid, findUserDto.phoneNumber);
+    }
+
+
+  // 문자 인증 요청
   @ApiOperation({summary : "문자인증 요청"})
   @Post('SMSAuthentication')
   SMSAuthentication(
     @Body() authenticationAuthDto : AuthenticationAuthDto,
   ) {
-    
-    const verificationCode = this.authService.SMSAuthentication(authenticationAuthDto.number);
-    return verificationCode;
+    return this.authService.SMSAuthentication(authenticationAuthDto.number);
   }
 
 }

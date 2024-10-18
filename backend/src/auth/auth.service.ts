@@ -32,6 +32,7 @@ export class AuthService {
   
   }
 
+  // 문자 인증 보내는 코드
   async SMSAuthentication(phoneNumber: string): Promise<string> {
 
     await this.userService.findUserID(phoneNumber);
@@ -48,6 +49,22 @@ export class AuthService {
 
 
     return verificationCode;
+  }
+
+  // 데이터 베이스 상에 아이디 존재하면 인증번호를 보냄
+  async findUid(phoneNumber : string) {
+    return await this.userService.findUserID(phoneNumber);
+  }
+
+ 
+   // 핸드폰 번호 기반으로 아이디 찾고 일치하면 인증 코드 보냄
+  async passwordCheck(uid : string, phoneNumber : string) {
+    const userid = await this.userService.findUserID(phoneNumber);
+    if(uid !== userid) {
+      throw new UnauthorizedException('phoneNumber and uswerid do not match')
+    }
+
+    return this.SMSAuthentication(phoneNumber);
   }
 
 }
