@@ -39,11 +39,11 @@ export class UsersController {
     return res.status(200).json({message : "No problem"})
   }
 
-  // 비밀번호 찾기
-  @ApiOperation({summary : "비밀번호 찾기"})
-  @ApiResponse({status : 201, description : "비밀번호가 없을 시 404에러 반환", type : FindUserDto})
+  // 아이디 찾기
+  @ApiOperation({summary : "아이디 찾기"})
+  @ApiResponse({status : 201, description : "핸드폰 번호 틀릴 시 404에러 반환", type : FindUserDto})
   @Post('findingpassword')
-  async findPassword(
+  async findUserID(
     @Body() findUserDto : FindUserDto
   ) {
     return await this.usersService.findUserID(findUserDto);
