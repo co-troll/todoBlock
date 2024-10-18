@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { SolapiMessageService } from 'solapi'
+
 
 @Injectable()
 export class AuthService {
@@ -25,12 +27,27 @@ export class AuthService {
   }
 
   async socialLogin(user : any) {
-
     const payload = {uid : user.nickname}
-
     return this.jwtService.sign(payload)
-    
+  
   }
+
+  SMSAuthentication(phoneNumber : string) : string {
+    const messageService = new SolapiMessageService(process.env.API_KEY, process.env.API_SECRET);
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    messageService.sendOne({
+      to: phoneNumber,
+      from: process.env.from_Number,
+      text: `인증번호 : ${verificationCode}`
+    }).then(res => console.log(res))
+    .catch(err => console.error('Error sending SMS:', err));
+
+
+    return verificationCode;
+
+  }
+
 
 
 

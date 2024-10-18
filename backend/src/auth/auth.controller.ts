@@ -4,6 +4,7 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthenticationAuthDto } from './dto/authentication-auth.dto';
 
 @ApiTags('로그인 API')
 @Controller('auth')
@@ -59,6 +60,15 @@ export class AuthController {
       httpOnly : true
     })
     res.status(200).json({message : "소셜 로그인 성공"})
+  }
+
+  @ApiOperation({summary : "문자인증 요청"})
+  @Post('SMSAuthentication')
+  SMSAuthentication(
+    @Body() authenticationAuthDto : AuthenticationAuthDto,
+  ) {
+    const verificationCode = this.authService.SMSAuthentication(authenticationAuthDto.number);
+    return verificationCode;
   }
 
 }
