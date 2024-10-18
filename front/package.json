@@ -14,12 +14,14 @@
     "@react-three/rapier": "^1.5.0",
     "@tanstack/react-query": "^5.59.15",
     "axios": "^1.7.7",
+    "env": "^0.0.2",
     "jotai": "^2.10.0",
     "js-cookie": "^3.0.5",
     "next": "14.2.13",
     "react": "^18",
     "react-calendar": "^5.0.0",
     "react-dom": "^18",
+    "solapi": "^5.3.1",
     "three": "^0.169.0"
   },
   "devDependencies": {

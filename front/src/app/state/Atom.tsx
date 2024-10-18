@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-export const Atom = atom({
+export const userAtom = atom({
     users: [
         {
             uid:'',
@@ -8,6 +8,11 @@ export const Atom = atom({
             uPhone:'',
         }
     ]
+})
+
+export const userInputAtom = atom({
+    uid:'',
+    uphone:'',
 })
 
 export const urlAtom = atom(false)
