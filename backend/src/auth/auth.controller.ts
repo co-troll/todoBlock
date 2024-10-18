@@ -67,6 +67,7 @@ export class AuthController {
   SMSAuthentication(
     @Body() authenticationAuthDto : AuthenticationAuthDto,
   ) {
+    
     const verificationCode = this.authService.SMSAuthentication(authenticationAuthDto.number);
     return verificationCode;
   }
