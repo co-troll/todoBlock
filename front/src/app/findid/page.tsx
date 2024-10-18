@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import BackDiv from '../components/BackDiv'
 import Line from '../components/Line'
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,8 @@ const page = () => {
 
     const [url, setUrl] = useAtom(urlAtom);
     const [userInput, setUserInput] = useAtom(userInputAtom);
-    const [SMSConfirm, setSMSConfirm] = useState(false);
+    const [smsConfirm, setSMSConfirm] = useState('');
+    const [Confirm, setConfirm] = useState(false);
 
     setUrl(false);
 
@@ -26,6 +27,7 @@ const page = () => {
 
     const toFindId = () => {
         router.push('/findid')
+        
     }
 
     // 인증요청 버튼
@@ -33,22 +35,26 @@ const page = () => {
         const phoneValue = phoneInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/', phoneValue)
+            const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', phoneValue)
             // response에 랜덤함수값
-            console.log(response)
-            // setSMSConfirm(response)
+            // if () {
+                console.log(response.data)
+                setSMSConfirm(response.data)
+            // }
         } catch (error) {
             console.error('에러 발생', error)
+            alert('휴대폰 번호를 다시 확인해주세요.')
         }
     }
 
     // 인증확인 버튼
     const checkNum = () => {
         const SMSConfirmValue = SMSConfirmInput.current.value;
-        if(SMSConfirm === SMSConfirmValue){
-            console.log('인증완료')
-            alert('인증 완료되었습니다.')
-            return true;
+        if (smsConfirm == SMSConfirmValue && SMSConfirmValue != '') {
+            alert('인증이 완료되었습니다.')
+            setConfirm(true);
+        } else {
+            alert('인증번호가 잘못되었습니다.')
         }
     }
 
@@ -58,16 +64,14 @@ const page = () => {
 
         try {
             const response = await axios.post('http://localhost:4000/users/findingpassword', { phoneNumber: phoneValue })
-            console.log(response.data.uid)
-            if (response.data) {
-                if (checkNum()) {
-                    setUserInput({
-                        uid: response.data.uid,
-                        uphone: phoneValue,
-                    })
-                    router.push('findid/userid')
-                }
+            if (Confirm) {
+                setUserInput({
+                    uid: response.data.uid,
+                    uphone: phoneValue,
+                })
+                router.push('findid/userid')
             } else {
+                alert('휴대폰 인증을 해주세요.')
                 console.log('오류 발생')
             }
         } catch (error) {
@@ -96,8 +100,8 @@ const page = () => {
                     <button className='w-1/4 h-10 border-[1px] border-purple-900/80 rounded-full text-sm font-bold text-purple-900' onClick={reqPhone}>인증번호 전송</button>
                 </div>
                 <div className='flex gap-1'>
-                    <input type='text' placeholder='인증번호 입력' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none'></input>
-                    <button className='w-1/4 h-10 border-[1px] border-purple-900/80 rounded-full text-sm font-bold text-purple-900'>확인</button>
+                    <input type='text' placeholder='인증번호 입력' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none' ref={SMSConfirmInput}></input>
+                    <button className='w-1/4 h-10 border-[1px] border-purple-900/80 rounded-full text-sm font-bold text-purple-900' onClick={checkNum}>확인</button>
                 </div>
                 <button className='w-full h-10 rounded-full bg-purple-900/80 text-white' onClick={findBtn}>아이디 찾기</button>
             </div>

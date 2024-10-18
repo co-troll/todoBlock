@@ -40,11 +40,14 @@ const page = () => {
                 </div>
                 <div className='flex flex-col px-10 gap-4'>
                     <div className='flex gap-1 '>
-                        <input type='text' ref={uidInput} placeholder='아이디 입력' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none'></input>
-                        <button className='w-1/4 h-10 border-[1px] border-purple-900/80 rounded-full text-sm font-bold text-purple-900'>인증번호 전송</button>
+                        <input type='text' ref={uidInput} placeholder='아이디 입력' className='w-full h-10 border-b-[1px] pl-1 focus:outline-none'></input>
                     </div>
                     <div className='flex gap-1'>
                         <input type='text' placeholder='휴대폰번호 입력(`-`제외)' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none'></input>
+                        <button className='w-1/4 h-10 border-[1px] border-purple-900/80 rounded-full text-sm font-bold text-purple-900'>인증번호 전송</button>
+                    </div>
+                    <div className='flex gap-1'>
+                        <input type='text' placeholder='인증번호 입력' className='w-3/4 h-10 border-b-[1px] pl-1 focus:outline-none'></input>
                         <button className='w-1/4 h-10 border-[1px] border-purple-900/80 rounded-full text-sm font-bold text-purple-900'>확인</button>
                     </div>
                     <button className='w-full h-10 rounded-full bg-purple-900/80 text-white'>비밀번호 찾기</button>
