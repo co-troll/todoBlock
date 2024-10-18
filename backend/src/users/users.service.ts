@@ -63,9 +63,9 @@ export class UsersService {
     return user;
   }
 
-  // 핸드폰 번호로 비밀번호를 찾음
-  async findUserID(findUserDto : FindUserDto) {
-    const userData = await this.UserEntity.findOne({where : {phoneNumber : findUserDto.phoneNumber }, attributes : ['uid']})
+  // 핸드폰 번호로 아이디를 찾음
+  async findUserID(phoneNumber : string) {
+    const userData = await this.UserEntity.findOne({where : { phoneNumber }, attributes : ['uid']})
     if (userData) {
       return userData;  // userData 자체가 { uid: 'value' } 형태
     } else {

@@ -46,7 +46,7 @@ export class UsersController {
   async findUserID(
     @Body() findUserDto : FindUserDto
   ) {
-    return await this.usersService.findUserID(findUserDto);
+    return await this.usersService.findUserID(findUserDto.phoneNumber);
   }
 
   // 유저 아이디 전송

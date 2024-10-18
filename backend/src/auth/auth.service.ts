@@ -32,7 +32,10 @@ export class AuthService {
   
   }
 
-  SMSAuthentication(phoneNumber : string) : string {
+  async SMSAuthentication(phoneNumber: string): Promise<string> {
+
+    await this.userService.findUserID(phoneNumber);
+
     const messageService = new SolapiMessageService(process.env.API_KEY, process.env.API_SECRET);
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -41,12 +44,13 @@ export class AuthService {
       from: process.env.from_Number,
       text: `인증번호 : ${verificationCode}`
     }).then(res => console.log(res))
-    .catch(err => console.error('Error sending SMS:', err));
+      .catch(err => console.error('Error sending SMS:', err));
 
 
     return verificationCode;
-
   }
+
+}
 
 
 
