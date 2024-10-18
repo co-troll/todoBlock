@@ -27,7 +27,7 @@ const page = () => {
 
     const toFindId = () => {
         router.push('/findid')
-        
+
     }
 
     // 인증요청 버튼
@@ -35,11 +35,11 @@ const page = () => {
         const phoneValue = phoneInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', phoneValue)
+            const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
             // response에 랜덤함수값
             // if () {
-                console.log(response.data)
-                setSMSConfirm(response.data)
+            console.log(response.data)
+            setSMSConfirm(response.data)
             // }
         } catch (error) {
             console.error('에러 발생', error)
@@ -48,17 +48,27 @@ const page = () => {
     }
 
     // 인증확인 버튼
-    const checkNum = () => {
+    const checkNum = async () => {
         const SMSConfirmValue = SMSConfirmInput.current.value;
+        const phoneValue = phoneInput.current.value;
+
+        console.log(phoneValue)
+
         if (smsConfirm == SMSConfirmValue && SMSConfirmValue != '') {
-            alert('인증이 완료되었습니다.')
-            setConfirm(true);
+            try {
+                const response = await axios.post('http://localhost:4000/auth/finduid', {phoneNumber:phoneValue})
+                console.log(response)
+                alert('인증이 완료되었습니다.')
+                setConfirm(true);
+            } catch (error) {
+
+            }
         } else {
             alert('인증번호가 잘못되었습니다.')
         }
     }
 
-    // 아이디 찾기 버튼
+    // 아이디 찾기 버튼  // 고쳐야함
     const findBtn = async () => {
         const phoneValue = phoneInput.current.value;
 
@@ -78,6 +88,7 @@ const page = () => {
             console.error('에러 발생', error)
         }
     }
+
 
     return (
         <div className='flex flex-col gap-5'>

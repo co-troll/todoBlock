@@ -56,7 +56,6 @@ export class AuthService {
     return await this.userService.findUserID(phoneNumber);
   }
 
- 
    // 핸드폰 번호 기반으로 아이디 찾고 일치하면 인증 코드 보냄
   async passwordCheck(uid : string, phoneNumber : string) {
     const userid = await this.userService.findUserID(phoneNumber);
