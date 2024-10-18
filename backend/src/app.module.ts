@@ -6,6 +6,8 @@ import { UsersModule } from './users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { SmsModule } from './sms/sms.module';
+import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
   imports: [ ConfigModule.forRoot({isGlobal : true, envFilePath : '.env'}),
@@ -23,7 +25,9 @@ import { AuthModule } from './auth/auth.module';
     }),
     ScheduleModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    SmsModule,
+    FirebaseModule
   ],
   controllers: [AppController],
   providers: [AppService],
