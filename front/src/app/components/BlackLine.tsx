@@ -2,7 +2,7 @@ import React from 'react'
 
 const BlackLine = ({width}: any) => {
     return (
-        <div className=' h-[2px] bg-black absolute' style={{width: width}}>
+        <div className=' h-[2px] bg-purple-900 absolute' style={{width: width}}>
 
         </div>
     )

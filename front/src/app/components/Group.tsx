@@ -6,7 +6,7 @@ import { DragControls, OrbitControls, Text } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import DraggableRigidBody, { DraggableRigidBodyProps } from "./DraggableRigidBody";
 
-const Book = ({ difficulty, position, name } : { difficulty : CubeDiffcultyKeys, position: number, name: string }) => {
+const Book = ({ difficulty, position, name, parentFunc } : { difficulty : CubeDiffcultyKeys, position: number, name: string, parentFunc: (data: string) => void }) => {
   const group = useRef<THREE.Group>(null!);
   const [hasFocus, setFocus] = useState(false);
   useFrame(() => {
@@ -16,8 +16,8 @@ const Book = ({ difficulty, position, name } : { difficulty : CubeDiffcultyKeys,
   const handleClick = (event : ThreeEvent<MouseEvent>) => {
     // setFocus(true);
     event.stopPropagation();
-    console.log(event.eventObject.parent);
-    event.eventObject.parent!.visible = false;
+    console.log(event.eventObject);
+    parentFunc(event.eventObject.parent?.name!)
   }
 
   const DraggableRigidBodyProps: Partial<DraggableRigidBodyProps> = {
@@ -38,7 +38,7 @@ const Book = ({ difficulty, position, name } : { difficulty : CubeDiffcultyKeys,
   return (
     // <DraggableRigidBody groupProps={ { position: [0, position, 0]  }} {...DraggableRigidBodyProps} visibleMesh={
       <RigidBody name={name} onCollisionEnter={(payload) => payload.target.rigidBody?.setBodyType(2, true)}>
-        <group ref={group} rotation={[0, THREE.MathUtils.degToRad(Math.floor(Math.random() * 2) * 90 + 90), 0]} position={[0, 0, 0]} scale={[1,1,1]} >
+        <group onClick={handleClick}  ref={group} rotation={[0, THREE.MathUtils.degToRad(Math.floor(Math.random() * 2) * 90 + 90), 0]} position={[0, position, 0]} scale={[1,1,1]} >
             {/* <CuboidCollider args={[2, 0.1, 2]} /> */}
             <Cube type={CubeType.FLOOR} position={CubePosition.FLOOR} length={CubeLength.SMALL} diff={difficulty} /> 
             <Cube type={CubeType.WALL} position={CubePosition.WALL} length={CubeLength.SMALL} diff={difficulty} name={name} /> 
