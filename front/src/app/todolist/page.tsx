@@ -1,30 +1,47 @@
 'use client'
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styles from './todolist.module.css';
 
 const page = () => {
-  const [todoList, setTodoList] = useState<[{content: string, dateArr:string[], difficulty: string}] | null>(null);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // 할 일 리스트 가져오기
   const getTodoList = useQuery({
     queryKey: ['todolist'],
     queryFn: async () => {
       const response = await axios.get('http://localhost:4000/schedule/view', {
         withCredentials: true
       });
-      // console.log(response.data);
       return await response.data;
     }
   })
+  
+  // const getLogout = useQuery({
+  //   queryKey: ['logout'],
+  //   queryFn: async () => {
+  //     const response = await axios.get('http://localhost:4000/auth/logout', {
+  //       withCredentials: true
+  //     });
+  //     console.log(response)
+  //     return response;
+  //   }
+  // })
 
+  // const logoutHandler = () => {
+  //   console.log(getLogout);
+  // }
+
+
+  // 로딩
   useEffect(() => {
     const data = async () => {
       try {
-        const res = await getTodoList.data;
-        console.log(res);
-        setTodoList(res);
+        // console.log(getTodoList.data);
+        setIsLoading(true);
       } catch (error) {
         console.log(error);
       }finally {
@@ -34,38 +51,28 @@ const page = () => {
     data();
   }, [])
 
+  // 할 일 리스트 뿌려주기
   useEffect(()=> {
-    console.log(todoList);
-  }, [todoList])
-  
-  useEffect(() => {
-    try {
-      if(!getTodoList.isLoading && todoList) {
-        // <div className='w-full flex'>
-        //               <span className='w-10 flex justify-center items-center h-10'>
-        //                 <div className='w-7 h-7 rounded-full border border-black'></div>
-        //               </span>
-        //               <span className='w-90 h-10 border border-black'></span>
-        //             </div>
-        // console.log(1)
-        // for(let i = 0; i < todoList.length; i++) {
-        // const todoBox = document.createElement('div');
-        // todoBox.classList.add('w-full flex');
-        // const checkBoxWrap = document.createElement('span');
-        // checkBoxWrap.classList.add('w-10 flex justify-center items-center h-10')
-        // const checkBox = document.createElement('div');
-        // checkBox.classList.add('w-7 h-7 rounded-full border border-black');
-        // const contentWrap = document.createElement('span');
-        // contentWrap.classList.add('w-90 h-10 border border-black')
-        // checkBoxWrap.appendChild(checkBox);
-        // todoBox.append(checkBoxWrap, contentWrap);
-        // (document.getElementById('todoBoxes') as HTMLDivElement).append(todoBox);
-      // }
+    if(getTodoList.isFetched && (document.getElementById('todoBoxes') as HTMLDivElement)) {
+      for(let i = 0; i < getTodoList.data.length; i++) {
+        const todoBox = document.createElement('div');
+        todoBox.classList.add('todo-box');
+        const checkBoxWrap = document.createElement('span');
+        checkBoxWrap.classList.add('checkbox-wrap');
+        const checkBox = document.createElement('div');
+        checkBox.classList.add('checkbox');
+        const contentWrap = document.createElement('span');
+        contentWrap.classList.add('content-wrap')
+        checkBoxWrap.appendChild(checkBox);
+        todoBox.append(checkBoxWrap, contentWrap);
+        if(todoBox){
+          (document.getElementById('todoBoxes') as HTMLDivElement).append(todoBox);
+        }
+      }
     }
-    } catch (error) {
-      console.log(error)
-    }
-  }, [getTodoList.isLoading])
+  }, [getTodoList.data, isLoading]) // 데이터 가져왔을 때 + 추가에서 취소 눌렀을 때
+
+  // 로딩 될 때
   if(isLoading) {
     return <div>로딩중</div>
   }
@@ -78,31 +85,11 @@ const page = () => {
                 ㅇㅇ님 환영합니다
                 <div>로그아웃버튼</div>
               </div>
-              <div className='w-full border border-black mt-20 box-height'></div>
+              <div className={`w-full border border-black mt-20 ${styles.boxHeight}`}></div>
               <div className='w-full mt-8 border border-black'>
                 <h1 className='p-2'>해야 할 일</h1>
                 <div className='w-full'>
-                  <div id='todoBoxes' className='w-full border-black border'>
-                    {/* <div className='w-full flex'>
-                      <span className='w-10 flex justify-center items-center h-10'>
-                        <div className='w-7 h-7 rounded-full border border-black'></div>
-                      </span>
-                      <span className='w-90 h-10 border border-black'></span>
-                    </div> */}
-                    {/* {todoList?.map(() => {
-                      console.log(todoList);
-
-                      return (
-                      <div className='w-full flex'>
-                        <span className='w-10 flex justify-center items-center h-10'>
-                          <div className='w-7 h-7 rounded-full border border-black'></div>
-                        </span>
-                        <span className='w-90 h-10 border border-black'></span>
-                      </div>
-                    )}
-                  )} */}
-                    <div></div>
-                  </div>
+                  <div id='todoBoxes' className='w-full border-black border'></div>
                 </div>
               </div>
               <div className='w-full mt-8'>
