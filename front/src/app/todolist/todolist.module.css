@@ -1,7 +1,7 @@
 .input-padding {
     padding: 3px 6px;
   }
-  .input-padding2 {
+  .inputPadding2 {
     padding: 8px 10px;
   }
   
@@ -25,11 +25,11 @@
   }
   
   /* todolist */
-  .todo-box {
+  .todoBox {
     @apply w-full flex
   }
   
-  .checkbox-wrap {
+  .checkboxWrap {
     @apply w-10 flex justify-center items-center h-10
   }
   
@@ -37,6 +37,6 @@
     @apply w-7 h-7 rounded-full border border-black
   }
   
-  .content-wrap {
+  .contentWrap {
     @apply w-full h-10 border border-black
   }

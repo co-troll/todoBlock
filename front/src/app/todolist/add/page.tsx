@@ -81,9 +81,9 @@ const page = () => {
     for(let i = 0; i < selectDate.length; i++) {
       const select = document.createElement('div');
       const dltBtn = document.createElement('div');
-      dltBtn.classList.add('date-dlt-btn');
+      dltBtn.classList.add(`${styles.dateDltBtn}`);
       dltBtn.onclick = selectDateDelete
-      select.classList.add('date-box');
+      select.classList.add(`${styles.dateBox}`);
       select.innerHTML = `${selectDate[i]}`
       select.append(dltBtn);
       (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
@@ -133,7 +133,7 @@ const page = () => {
               <h1 className='text-2xl'>새 할일 리스트</h1>
             </div>
             <div className='w-full flex flex-col items-center mt-8'>
-                <textarea name="" id="content" onChange={onChangeContent} className='border border-black w-full h-24 input-padding2 text-lg resize-none overflow-hidden'></textarea>
+                <textarea name="" id="content" onChange={onChangeContent} className={`border border-black w-full h-24 ${styles.inputPadding2} text-lg resize-none overflow-hidden`}></textarea>
                 <div className='w-full relative mt-4'>
                   <div className='flex items-center h-14 border rounded-sm px-2' onClick={onClickCalendarIcon}>
                     <span>

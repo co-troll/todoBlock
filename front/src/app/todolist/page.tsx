@@ -56,13 +56,13 @@ const page = () => {
     if(getTodoList.isFetched && (document.getElementById('todoBoxes') as HTMLDivElement)) {
       for(let i = 0; i < getTodoList.data.length; i++) {
         const todoBox = document.createElement('div');
-        todoBox.classList.add('todo-box');
+        todoBox.classList.add(`${styles.todoBox}`);
         const checkBoxWrap = document.createElement('span');
-        checkBoxWrap.classList.add('checkbox-wrap');
+        checkBoxWrap.classList.add(`${styles.checkboxWrap}`);
         const checkBox = document.createElement('div');
-        checkBox.classList.add('checkbox');
+        checkBox.classList.add(`${styles.checkbox}`);
         const contentWrap = document.createElement('span');
-        contentWrap.classList.add('content-wrap')
+        contentWrap.classList.add(`${styles.contentWrap}`)
         checkBoxWrap.appendChild(checkBox);
         todoBox.append(checkBoxWrap, contentWrap);
         if(todoBox){
