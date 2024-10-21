@@ -6,6 +6,7 @@ import axios from 'axios';
 import styles from './todolist.module.css';
 
 const page = () => {
+  const [todolist, setTodolist] = useState<[{content: string, dateArr: string[], difficulty: string}] | []>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -54,21 +55,7 @@ const page = () => {
   // 할 일 리스트 뿌려주기
   useEffect(()=> {
     if(getTodoList.isFetched && (document.getElementById('todoBoxes') as HTMLDivElement)) {
-      for(let i = 0; i < getTodoList.data.length; i++) {
-        const todoBox = document.createElement('div');
-        todoBox.classList.add(`${styles.todoBox}`);
-        const checkBoxWrap = document.createElement('span');
-        checkBoxWrap.classList.add(`${styles.checkboxWrap}`);
-        const checkBox = document.createElement('div');
-        checkBox.classList.add(`${styles.checkbox}`);
-        const contentWrap = document.createElement('span');
-        contentWrap.classList.add(`${styles.contentWrap}`)
-        checkBoxWrap.appendChild(checkBox);
-        todoBox.append(checkBoxWrap, contentWrap);
-        if(todoBox){
-          (document.getElementById('todoBoxes') as HTMLDivElement).append(todoBox);
-        }
-      }
+      setTodolist(getTodoList.data);
     }
   }, [getTodoList.data, isLoading]) // 데이터 가져왔을 때 + 추가에서 취소 눌렀을 때
 
@@ -89,7 +76,15 @@ const page = () => {
               <div className='w-full mt-8 border border-black'>
                 <h1 className='p-2'>해야 할 일</h1>
                 <div className='w-full'>
-                  <div id='todoBoxes' className='w-full border-black border'></div>
+                  <div id='todoBoxes' className='w-full border-black border'>
+                    {todolist.map((data, index) => {
+                      console.log(data)
+                      return (
+                        <li key={index}>하이</li>
+                        )
+                      }
+                    )}
+                  </div>
                 </div>
               </div>
               <div className='w-full mt-8'>

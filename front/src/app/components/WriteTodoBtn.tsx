@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 
 const WriteTodoBtn = ({content, dateArr, difficulty} : {content: string, dateArr: string[], difficulty: string}) => {
-  
+
     const todoMutation = useMutation({
       mutationFn: async (data: {content: string, dateArr: string[], difficulty: string}) => {
         console.log(data);
@@ -21,7 +22,7 @@ const WriteTodoBtn = ({content, dateArr, difficulty} : {content: string, dateArr
     }
 
   return (
-    <div onClick={onClickSave} className='w-6/12 h-14 border border-black flex items-center justify-center'>저장</div>
+    <Link href={'/todolist'} onClick={onClickSave} className='w-6/12 h-14 border border-black flex items-center justify-center'>저장</Link>
   )
 }
 
