@@ -1,15 +1,13 @@
 'use client'
 
 import React, { useCallback, useEffect, useState } from 'react'
-import date from '../../../../public/date.png';
 import Image from 'next/image';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'
 import Link from 'next/link';
 import ClockImage from '../../../../public/clock.png';
-import axios from 'axios';
 import WriteTodoBtn from '@/app/components/WriteTodoBtn';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import styles from '../todolist.module.css'
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -48,7 +46,6 @@ const page = () => {
     const _newValue = formatDate(newValue);
 
     setDate(newValue);
-    console.log(date)
     setSelectDate([...selectDate, _newValue])
     setOpenCalendar(false);
   }, [date]);
@@ -59,9 +56,9 @@ const page = () => {
       for(let i = 0; i < selectDate.length; i++) {
       const select = document.createElement('div');
       const dltBtn = document.createElement('div');
-      dltBtn.classList.add('date-dlt-btn');
+      dltBtn.classList.add(`${styles.dateDltBtn}`);
       dltBtn.onclick = selectDateDelete
-      select.classList.add('date-box');
+      select.classList.add(`${styles.dateBox}`);
       select.innerHTML = `${selectDate[i]}`
       select.append(dltBtn);
       (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
@@ -72,10 +69,8 @@ const page = () => {
   }, [selectDate])
 
   const selectDateDelete = (e: any) => {
-    console.log(1);
     let index = -1;
     for(let i = 0; i < selectDate.length; i++) {
-      // console.log(1);
       if(selectDate[i] === e.target.parentNode.innerHTML.split('<')[0]) {
         index = i;
       }
@@ -86,9 +81,9 @@ const page = () => {
     for(let i = 0; i < selectDate.length; i++) {
       const select = document.createElement('div');
       const dltBtn = document.createElement('div');
-      dltBtn.classList.add('date-dlt-btn');
+      dltBtn.classList.add(`${styles.dateDltBtn}`);
       dltBtn.onclick = selectDateDelete
-      select.classList.add('date-box');
+      select.classList.add(`${styles.dateBox}`);
       select.innerHTML = `${selectDate[i]}`
       select.append(dltBtn);
       (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
@@ -138,7 +133,7 @@ const page = () => {
               <h1 className='text-2xl'>새 할일 리스트</h1>
             </div>
             <div className='w-full flex flex-col items-center mt-8'>
-                <textarea name="" id="content" onChange={onChangeContent} className='border border-black w-full h-24 input-padding2 text-lg resize-none overflow-hidden'></textarea>
+                <textarea name="" id="content" onChange={onChangeContent} className={`border border-black w-full h-24 ${styles.inputPadding2} text-lg resize-none overflow-hidden`}></textarea>
                 <div className='w-full relative mt-4'>
                   <div className='flex items-center h-14 border rounded-sm px-2' onClick={onClickCalendarIcon}>
                     <span>
@@ -147,23 +142,23 @@ const page = () => {
                     <span className='text-lg ml-1'>시간</span>
                   </div>
                     <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'></div>
-                  <Calendar className='calendar ml-4' onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
+                  <Calendar className={`${styles.calendar} ml-4 calendar`} onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
                 </div>
-                <div className='w-full border h-14 border-black mt-3 flex items-center pl-4 text-lg'>
-                  <span className='w-3/12'>
-                    <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_easy' data-difficulty='easy' onClick={selectDifficulty}>
+                <div className='w-full border h-14 border-black mt-3 flex items-center text-lg px-3'>
+                  <span className='w-4/12'>
+                    <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_easy' data-difficulty='easy' onClick={selectDifficulty}>
                       <div className='w-4 h-4 border border-black bg-yellow-400 mr-1' data-difficulty='easy'></div>
                       <span data-difficulty='easy'>쉬움</span>
                     </div>
                   </span>
-                  <span className='w-3/12'>
-                    <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal' onClick={selectDifficulty}>
+                  <span className='w-4/12'>
+                    <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal' onClick={selectDifficulty}>
                       <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
                       <span data-difficulty='normal'>보통</span>
                     </div>
                   </span>
-                  <span className='w-3/12'>
-                    <div className='w-10/12 h-10 flex items-center justify-center cursor-pointer' id='difficulty_hard' data-difficulty='hard' onClick={selectDifficulty}>
+                  <span className='w-4/12'>
+                    <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_hard' data-difficulty='hard' onClick={selectDifficulty}>
                       <div className='w-4 h-4 border border-black bg-red-400 mr-1' data-difficulty='hard'></div>
                       <span data-difficulty='hard'>어려움</span>
                     </div>

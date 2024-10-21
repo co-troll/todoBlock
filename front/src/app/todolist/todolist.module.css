@@ -1,0 +1,42 @@
+.input-padding {
+    padding: 3px 6px;
+  }
+  .inputPadding2 {
+    padding: 8px 10px;
+  }
+  
+  .todo_title::-webkit-details-marker {
+    display: none;
+  }
+  
+  .dateBox {
+    @apply w-32 h-9 border border-black text-base rounded-lg flex items-center justify-center mb-1 relative
+  }
+  
+  .dateDltBtn {
+    @apply 
+    absolute w-5 h-5 items-center flex justify-center border border-black rounded-full rotate-45 -top-1 -right-2 bg-white z-10
+    before:w-5 before:h-1 before:bg-black before:rotate-180 before:absolute
+    after:w-5 after:h-1 after:bg-black after:-rotate-90 after:absolute
+  }
+  
+  .boxHeight {
+    height: 400px;
+  }
+  
+  /* todolist */
+  .todoBox {
+    @apply w-full flex
+  }
+  
+  .checkboxWrap {
+    @apply w-10 flex justify-center items-center h-10
+  }
+  
+  .checkbox {
+    @apply w-7 h-7 rounded-full border border-black
+  }
+  
+  .contentWrap {
+    @apply w-full h-10 border border-black
+  }
