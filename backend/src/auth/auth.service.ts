@@ -42,7 +42,7 @@ export class AuthService {
 
     messageService.sendOne({
       to: phoneNumber,
-      from: process.env.from_Number,
+      from: process.env.FROM_NUMBER,
       text: `인증번호 : ${verificationCode}`
     }).then(res => console.log(res))
       .catch(err => console.error('Error sending SMS:', err));

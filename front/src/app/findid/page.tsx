@@ -5,7 +5,7 @@ import BackDiv from '../components/BackDiv'
 import Line from '../components/Line'
 import { useRouter } from 'next/navigation';
 import { useAtom } from 'jotai';
-import { userInputAtom, urlAtom, userAtom } from '../state/Atom';
+import { userInputAtom, urlAtom } from '../state/Atom';
 import axios from 'axios';
 
 const page = () => {
@@ -27,7 +27,6 @@ const page = () => {
 
     const toFindId = () => {
         router.push('/findid')
-
     }
 
     // 인증요청 버튼
@@ -36,11 +35,9 @@ const page = () => {
 
         try {
             const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
-            // response에 랜덤함수값
-            // if () {
-            console.log(response.data)
+            console.log(response.data) // 인증번호 콘솔
+            alert('인증번호 전송이 완료되었습니다..')
             setSMSConfirm(response.data)
-            // }
         } catch (error) {
             console.error('에러 발생', error)
             alert('휴대폰 번호를 다시 확인해주세요.')
@@ -48,44 +45,36 @@ const page = () => {
     }
 
     // 인증확인 버튼
-    const checkNum = async () => {
+    const checkNum = () => {
         const SMSConfirmValue = SMSConfirmInput.current.value;
-        const phoneValue = phoneInput.current.value;
 
-        console.log(phoneValue)
-
-        if (smsConfirm == SMSConfirmValue && SMSConfirmValue != '') {
-            try {
-                const response = await axios.post('http://localhost:4000/auth/finduid', {phoneNumber:phoneValue})
-                console.log(response)
-                alert('인증이 완료되었습니다.')
-                setConfirm(true);
-            } catch (error) {
-
-            }
+        if (smsConfirm == SMSConfirmValue && SMSConfirmValue.length == 6) {
+            alert('인증이 완료되었습니다.')
+            setConfirm(true);
         } else {
             alert('인증번호가 잘못되었습니다.')
         }
     }
 
-    // 아이디 찾기 버튼  // 고쳐야함
+    // 아이디 찾기 버튼
     const findBtn = async () => {
         const phoneValue = phoneInput.current.value;
 
-        try {
-            const response = await axios.post('http://localhost:4000/users/findingpassword', { phoneNumber: phoneValue })
-            if (Confirm) {
+        if (Confirm) {
+            try {
+                const response = await axios.post('http://localhost:4000/auth/finduid', { phoneNumber: phoneValue })
+                console.log(response)
                 setUserInput({
-                    uid: response.data.uid,
+                    uid: response.data,
                     uphone: phoneValue,
                 })
                 router.push('findid/userid')
-            } else {
-                alert('휴대폰 인증을 해주세요.')
-                console.log('오류 발생')
+            } catch (error) {
+                console.error('에러 발생', error)
             }
-        } catch (error) {
-            console.error('에러 발생', error)
+        } else {
+            alert('휴대폰 인증을 해주세요.')
+            console.log('오류 발생')
         }
     }
 
@@ -116,7 +105,6 @@ const page = () => {
                 </div>
                 <button className='w-full h-10 rounded-full bg-purple-900/80 text-white' onClick={findBtn}>아이디 찾기</button>
             </div>
-            {/* <Findid /> */}
         </div>
     )
 }
