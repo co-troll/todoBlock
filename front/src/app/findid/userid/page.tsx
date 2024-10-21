@@ -9,17 +9,20 @@ import { useRouter } from 'next/navigation';
 const page = () => {
 
     const [url, setUrl] = useAtom(urlAtom);
-    const userInput = useAtomValue(userInputAtom);
+    const [userInput, setUserInput] = useAtom(userInputAtom);
     const router = useRouter();
 
-    setUrl(true);
+    if(!url){
+        setUrl(true);
+    }
 
     const toLogin = () => {
         router.push('/login')
     }
 
     const toFindPw = () => {
-        router.push('/findpw')
+        setUserInput(userInput)
+        router.push('/findpw/userpw')
     }
 
     return (
