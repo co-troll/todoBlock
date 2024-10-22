@@ -96,7 +96,7 @@ const page = () => {
   }
 
   useEffect(() => {
-    const calendar = document.querySelector('.calendar') as HTMLElement;
+    const calendar = document.querySelector('#calendarWrap') as HTMLElement;
     openCalendar ? calendar.style.display = "block" : calendar.style.display = "none";
   }, [openCalendar]);
 
@@ -134,7 +134,7 @@ const page = () => {
             </div>
             <div className='w-full flex flex-col items-center mt-8'>
                 <textarea name="" id="content" onChange={onChangeContent} className={`border border-black w-full h-24 ${styles.inputPadding2} text-lg resize-none overflow-hidden`}></textarea>
-                <div className='w-full relative mt-4'>
+                <div className='w-full mt-4'>
                   <div className='flex items-center h-14 border rounded-sm px-2' onClick={onClickCalendarIcon}>
                     <span>
                       <Image src={ClockImage} width={32} height={32} alt='시계' / >
@@ -142,7 +142,9 @@ const page = () => {
                     <span className='text-lg ml-1'>시간</span>
                   </div>
                     <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'></div>
-                  <Calendar className={`${styles.calendar} ml-4 calendar`} onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
+                    <div id='calendarWrap' className='absolute w-full h-full bg-[rgb(0,0,0,0.8)] top-0 left-0 flex justify-center items-center'>
+                      <Calendar className={`${styles.calendar} calendar`} onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
+                    </div>
                 </div>
                 <div className='w-full border h-14 border-black mt-3 flex items-center text-lg px-3'>
                   <span className='w-4/12'>
