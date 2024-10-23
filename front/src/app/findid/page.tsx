@@ -6,7 +6,7 @@ import Line from '../components/Line'
 import { useRouter } from 'next/navigation';
 import { useAtom } from 'jotai';
 import { userInputAtom, urlAtom } from '../state/Atom';
-import axios from 'axios';
+import instance from '../instance';
 
 const page = () => {
 
@@ -70,7 +70,7 @@ const page = () => {
         const phoneValue = phoneInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
+            const response = await instance.post('auth/SMSAuthentication', { number: phoneValue })
             console.log(response.data) // 인증번호 콘솔
             // alert('인증번호 전송이 완료되었습니다.')
             setSMSConfirm(response.data)
@@ -108,7 +108,7 @@ const page = () => {
 
         if (Confirm) {
             try {
-                const response = await axios.post('http://localhost:4000/auth/finduid', { phoneNumber: phoneValue })
+                const response = await instance.post('auth/finduid', { phoneNumber: phoneValue })
                 console.log(response)
                 setUserInput({
                     uid: response.data,

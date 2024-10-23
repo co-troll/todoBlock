@@ -5,9 +5,9 @@ import Line from '../components/Line'
 import BackDiv from '../components/BackDiv'
 import { useAtom } from 'jotai'
 import { urlAtom, userInputAtom } from '../state/Atom'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Loading from '../components/Loading'
+import instance from '../instance'
 
 const page = () => {
     const [url, setUrl] = useAtom(urlAtom);
@@ -68,7 +68,7 @@ const page = () => {
         const phoneValue = phoneInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/auth/checkpassword', { uid: idValue, phoneNumber: phoneValue })
+            const response = await instance.post('auth/checkpassword', { uid: idValue, phoneNumber: phoneValue })
             console.log(response.data) // 인증번호 콘솔
             // alert('인증번호를 전송했습니다.')
             setIsSend(true);
@@ -98,7 +98,7 @@ const page = () => {
 
         if (confirm) {
             try {
-                const response = await axios.post('http://localhost:4000/users/requestpasswordchange', { uid: idValue, phoneNumber: phoneValue })
+                const response = await instance.post('users/requestpasswordchange', { uid: idValue, phoneNumber: phoneValue })
                 console.log(response)
                 // alert('성공')
                 setUserInfo({

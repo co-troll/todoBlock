@@ -4,7 +4,6 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { RefObject, useRef, useState } from "react";
 import { DragControls, OrbitControls, Text } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import DraggableRigidBody, { DraggableRigidBodyProps } from "./DraggableRigidBody";
 
 const Book = ({ id, difficulty, position, name, parentFunc } : { id: number, difficulty : CubeDiffcultyKeys, position: number, name: string, parentFunc: (data: string) => void }) => {
   const group = useRef<THREE.Group>(null!);
@@ -20,24 +19,10 @@ const Book = ({ id, difficulty, position, name, parentFunc } : { id: number, dif
     parentFunc(event.eventObject.parent?.name!)
   }
 
-  const DraggableRigidBodyProps: Partial<DraggableRigidBodyProps> = {
-    rigidBodyProps: {
-      gravityScale: 3.5,
-      linearDamping: 5,
-      angularDamping: 0.2,
-      colliders: "cuboid",
-      onCollisionEnter: (payload) => payload.target.rigidBody?.setBodyType(2, false),
-      
-    },
-    dragControlsProps: {
-      preventOverlap: true,
-      
-    },
-  };
-
   return (
     // <DraggableRigidBody groupProps={ { position: [0, position, 0]  }} {...DraggableRigidBodyProps} visibleMesh={
-      <RigidBody name={String(id)} onCollisionEnter={(payload) => payload.target.rigidBody?.setBodyType(2, true)}>
+      // <RigidBody name={String(id)} onCollisionEnter={(payload) => payload.target.rigidBody?.setBodyType(2, true)}>
+      <RigidBody name={String(id)} onCollisionEnter={(payload) => {if (payload.rigidBody?.bodyType() == 1) { payload.target.rigidBody?.setBodyType(1, true)}}}>
         <group onClick={handleClick}  ref={group} rotation={[0, THREE.MathUtils.degToRad(Math.floor(Math.random() * 2) * 90 + 90), 0]} position={[0, position, 0]} scale={[1,1,1]} >
             {/* <CuboidCollider args={[2, 0.1, 2]} /> */}
             <Cube type={CubeType.FLOOR} position={CubePosition.FLOOR} length={CubeLength.SMALL} diff={difficulty} /> 

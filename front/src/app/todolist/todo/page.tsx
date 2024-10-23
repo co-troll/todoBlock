@@ -3,8 +3,8 @@
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
 import HeaderTab from '@/app/components/HeaderTab'
+import instance from '@/app/instance'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -20,8 +20,9 @@ const page = () => {
     const getTodoList = useQuery({
         queryKey: ['todolist'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:4000/schedule/view?status=not-finished', {
-                withCredentials: true
+            const response = await instance({
+                method: "get",
+                url: 'schedule/view?status=not-finished'
             });
             return await response.data;
         },
@@ -55,8 +56,12 @@ const page = () => {
 
     const completeMutate = useMutation({
         mutationFn: async (index) => {
-            return await axios.patch(`http://localhost:4000/schedule/isfinished/${index}`, {isFinished: true}, {
-                withCredentials: true
+            return await instance({
+                method: "patch",
+                url: `schedule/isfinished/${index}`,
+                data: {
+                    isFinished: true
+                }
             });
         },
         onError(err) {
@@ -101,7 +106,7 @@ const page = () => {
                                 queryClient.invalidateQueries(['viewTodo']);
                                 router.push(`/todolist/view/${data.id}`);
                             }}
-                            key={index} className='w-full h-12 border-black border-[1px] rounded-md list-none'>
+                            key={index} className='w-full h-max border-black border-[1px] rounded-md list-none'>
                                 <div className='w-full h-2/3 border border-black flex p-1'>
                                     <div data-index={data.id} className='w-5 h-5 border border-black rounded-full relative z-10' onClick={onClickCompleleHandler}></div>
                                     <div className='ml-2'>
@@ -109,7 +114,7 @@ const page = () => {
                                     </div>
                                 </div>
                                 <div className='w-full'>
-                                    <div className='flex'>
+                                    <div className='flex h-max'>
                                         {data.dateArr.map((el: string, id: number)=>{
                                             return (
                                                 <div key={id} className='mr-2'>{el}</div>

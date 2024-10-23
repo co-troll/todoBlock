@@ -1,8 +1,8 @@
 'use client'
 
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react'
+import instance from '../instance';
 
 const Findid = () => {
 
@@ -14,7 +14,7 @@ const Findid = () => {
         const phoneValue = phoneInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/users/findingpassword', { phoneNumber: phoneValue })
+            const response = await instance.post('users/findingpassword', { phoneNumber: phoneValue })
             console.log(response.data)
         } catch (error) {
             console.error('에러 발생', error)

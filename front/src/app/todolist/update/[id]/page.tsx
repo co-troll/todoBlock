@@ -9,9 +9,9 @@ import ClockImage from '../../../../../public/clock.png';
 import WriteTodoBtn from '@/app/components/WriteTodoBtn';
 import styles from '../../todolist.module.css'
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import UpdateTodoBtn from '@/app/components/UpdateTodoBtn';
 import { useRouter } from 'next/navigation';
+import instance from '@/app/instance';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -30,8 +30,9 @@ const page = ({params} : {params: any}) => {
     queryKey: ['updateTodo'],
     queryFn: async () => {
       console.log(params.id)
-      const response = await axios.get(`http://localhost:4000/schedule/view/${params.id}`, {
-        withCredentials: true
+      const response = await instance({
+        method: "get",
+        url: `schedule/view/${params.id}`
       });
       return await response.data
     },
