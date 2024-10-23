@@ -55,15 +55,22 @@ const SignupForm = () => {
     // 인증요청 버튼
     const reqPhone = async () => {
         const phoneValue = phoneNum.current.value;
+        const regexPhone = /^01[016789]-?\d{3,4}-?\d{4}$/;
+        const isPhoneNumberValid = regexPhone.test(phoneValue);
 
-        try {
-            const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
-            console.log(response.data) // 인증번호 콘솔
-            // alert('인증번호 전송이 완료되었습니다.')
-            setSMSConfirm(response.data)
-            setIsSend(true);
-        } catch (error) {
-            console.error('에러 발생', error)
+        if (isPhoneNumberValid) {
+            try {
+                const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
+                console.log(response.data) // 인증번호 콘솔
+                // alert('인증번호 전송이 완료되었습니다.')
+                setSMSConfirm(response.data)
+                setIsSend(true);
+                setConfirm(false);
+            } catch (error) {
+                console.error('에러 발생', error)
+                alert('휴대폰 번호를 다시 확인해주세요.')
+            }
+        }else{
             alert('휴대폰 번호를 다시 확인해주세요.')
         }
     }
@@ -76,6 +83,7 @@ const SignupForm = () => {
             if (isSend) {
                 alert('인증이 완료되었습니다.')
                 setConfirm(true);
+                setTime(180);
                 setIsSend(false);
             } else {
                 alert('인증 시간이 초과되었습니다.')
@@ -87,7 +95,7 @@ const SignupForm = () => {
 
     const idCheck = async () => {
         const uid = uidInput.current.value;
-        const regexId = /^[a-z0-9]{6,16}$/;
+        const regexId = /^[a-zA-Z0-9]{6,16}$/
         const isIdValid = regexId.test(uid);
 
         try {
@@ -114,7 +122,7 @@ const SignupForm = () => {
         const uPhone = phoneNum.current.value;
 
         // 정규식
-        const regexId = /^[a-z0-9]{6,16}$/;
+        const regexId = /^[a-zA-Z0-9]{6,16}$/
         const regexPassword = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
         const regexPhone = /^01[016789]-?\d{3,4}-?\d{4}$/;
 
@@ -136,58 +144,71 @@ const SignupForm = () => {
             return;
         }
 
-        try {
-            const response = await axios.post('http://localhost:4000/users/signup', {
-                uid: uid,
-                upw: upw,
-                phoneNumber: uPhone,
-            });
+        if (Confirm) {
+            try {
+                const response = await axios.post('http://localhost:4000/users/signup', {
+                    uid: uid,
+                    upw: upw,
+                    phoneNumber: uPhone,
+                });
 
-            router.push('/signup/success')
+                router.push('/signup/success')
 
-        } catch (error: any) {
-            if (error.response.status || error.response === 409) {
-                alert('아이디 또는 핸드폰번호 중복입니다.')
-            } else {
-                console.error('회원가입 실패', error);
-                alert('회원가입 중 오류가 발생했습니다.');
+            } catch (error: any) {
+                if (error.response.status || error.response === 409) {
+                    alert('이미 가입된 휴대폰 번호입니다.')
+                    setConfirm(false);
+                    setTime(180);
+                } else {
+                    console.error('회원가입 실패', error);
+                    alert('회원가입 중 오류가 발생했습니다.');
+                }
             }
+        } else {
+            alert('휴대폰 인증이 필요합니다.')
+            return;
         }
     }
 
     return (
         <div>
             <form className='w-full flex flex-col gap-5'>
-                <div className='flex flex-col px-6 gap-3 items-center relative'>
-                    <label className='flex w-full h-5 text-[28px] items-center'>아이디</label>
-                    {idAvailable === true && (
-                        <p className={styled.greenText} style={{ display: 'block' }}>
-                            사용 가능한 아이디입니다.
-                        </p>
-                    )}
-                    {idAvailable === false && (
-                        <p className={styled.redText} style={{ display: 'block' }}>
-                            사용 불가능한 아이디입니다.
-                        </p>
-                    )}
-                    <Input type='text' place='아이디 입력(6~16자)' inputRef={uidInput} />
-                    <button type='button' onClick={idCheck} className='w-16 h-8 absolute text-white rounded-md border-2 border-none bg-purple-900/80 right-6 top-6'>중복 확인</button>
-                    <label className='flex w-full h-5 text-2xl items-center'>비밀번호</label>
-                    <Input type='password' place='비밀번호 입력(문자, 숫자 포함 6~16자)' inputRef={upwInput} />
-                    <label className='flex w-full h-5 text-2xl items-center'>비밀번호 확인</label>
-                    <Input type='password' place='비밀번호 재입력' inputRef={confirmPw} />
+                <div className='flex flex-col px-6 gap-5 items-center'>
+                    <div className='w-full flex flex-col gap-1 relative'>
+                        <label className='flex w-full h-5 text-2xl items-center'>아이디</label>
+                        {idAvailable === true && (
+                            <p className={styled.greenText} style={{ display: 'block' }}>
+                                사용 가능한 아이디입니다.
+                            </p>
+                        )}
+                        {idAvailable === false && (
+                            <p className={styled.redText} style={{ display: 'block' }}>
+                                사용 불가능한 아이디입니다.
+                            </p>
+                        )}
+                        <Input type='text' place='아이디 입력(6~16자)' inputRef={uidInput} />
+                        <button type='button' onClick={idCheck} className='w-20 h-9 absolute text-white rounded-md border-2 border-none bg-purple-900/80 right-0 top-3'>중복 확인</button>
+                    </div>
+                    <div className='w-full flex flex-col gap-1'>
+                        <label className='flex w-full h-5 text-2xl items-center'>비밀번호</label>
+                        <Input type='password' place='비밀번호 입력(문자, 숫자 포함 6~16자)' inputRef={upwInput} />
+                    </div>
+                    <div className='w-full flex flex-col gap-1'>
+                        <label className='flex w-full h-5 text-2xl items-center'>비밀번호 확인</label>
+                        <Input type='password' place='비밀번호 재입력' inputRef={confirmPw} />
+                    </div>
                 </div>
-                <div className='flex flex-col px-6 gap-6 items-center relative'>
+                <div className='flex flex-col px-6 gap-4 items-center relative'>
                     <label className='flex w-full h-5 text-2xl items-center'>휴대폰 번호</label>
                     <input type='text' ref={phoneNum} placeholder='휴대전화번호 입력(`-`제외)' className='w-full h-6 pl-1 bg-transparent border-b-[1px] border-black placeholder:text-gray-400 placeholder:text-sm focus:outline-none'></input>
                     {!isSend ?
-                        <button className='w-16 h-8  text-white absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-9' onClick={reqPhone}>인증번호 전송</button>
-                        : <div className='w-16 h-8  text-white absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-9'>{formatTime(time)}</div>
+                        <button type='button' className='w-20 h-9  text-white absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-6' onClick={reqPhone}>인증번호 전송</button>
+                        : <div className='w-20 h-9 flex justify-center items-center text-white absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-6'>{formatTime(time)}</div>
                     }
                     <input type='text' placeholder='인증번호 입력' className='w-full h-6 pl-1 bg-transparent border-b-[1px] border-black placeholder:text-gray-400 placeholder:text-sm focus:outline-none' ref={SMSConfirmInput}></input>
                     {!Confirm ?
-                        <button className='w-16 h-8  text-white absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-[83px]' onClick={checkNum}>확인</button>
-                        : <div className='w-16 h-8  text-white  absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-[83px]'>완료</div>
+                        <button type='button' className='w-20 h-9  text-white absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-[64px]' onClick={checkNum}>확인</button>
+                        : <div className='w-20 h-9 flex justify-center items-center text-white  absolute rounded-md border-2 border-none bg-purple-900/80 right-6 top-[64px]'>완료</div>
                     }
                 </div>
                 <div className='flex flex-col px-6 gap-3 items-center pt-5'>

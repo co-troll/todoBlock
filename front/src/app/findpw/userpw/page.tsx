@@ -26,9 +26,7 @@ const page = () => {
         }else{
             try{
                 const response = await axios.patch(`http://localhost:4000/users/${userInfo.uid}`, {upw: pwInput.current.value})
-                console.log(`${userInfo.uid}`)
-                alert('변경 완료, 로그인 페이지로 이동합니다.')
-                router.push('/login')
+                router.push('/findpw/userpw/success')
             }catch(error){
                 console.error('에러 발생', error)
             }

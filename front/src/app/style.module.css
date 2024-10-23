@@ -39,8 +39,9 @@
     display: none;
     position: absolute;
     color: green;
-    font-size: medium;
-    left: 80px;
+    font-size: smaller;
+    left: 55px;
+    top:1px;
 }
 
 @keyframes vib {
@@ -69,8 +70,9 @@
     display: hidden;
     position: absolute;
     color: red;
-    font-size: medium;
-    left: 80px;
+    font-size: smaller;
+    left: 55px;
+    top:1px;
     animation-name: vib;
     animation-duration: 0.2s;
     animation-fill-mode: forwards;
