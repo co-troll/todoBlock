@@ -82,8 +82,12 @@ const page = () => {
     }
 
     // 인증확인 버튼
-    const checkNum = () => {
+    const checkNum = async () => {
         const SMSConfirmValue = SMSConfirmInput.current.value;
+
+        // try{
+        //     const response = await axios.post('http:localhost:4000/auth/SMSVerify', {SMSConfirmValue})
+        // }
 
         if (smsConfirm == SMSConfirmValue && SMSConfirmValue.length == 6) {
             if (isSend) {

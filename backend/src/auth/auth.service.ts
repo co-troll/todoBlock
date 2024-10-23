@@ -24,6 +24,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid UserDTO')
     }
 
+    
+
     const payload = { uid : user.uid};
 
     return {
