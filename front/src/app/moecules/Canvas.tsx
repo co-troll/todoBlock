@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function Board ({ todolist }: { todolist: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] }) {
+export default function Board ({ todolist, isFetching }: { todolist: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}], isFetching: any }) {
   // const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
   const [bookList, setBookList] = useState<[{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] | []>([]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
@@ -27,25 +27,26 @@ export default function Board ({ todolist }: { todolist: [{id: number, content: 
   useEffect(()=>{
     if(todolist.length > 0) {
       setTimeout(()=>{
-        setBookList(todolist);
       }, 1000);
+      setBookList(todolist);
     }
   }, [todolist])
   
   useEffect(()=>{
     if(bookList.length > 0) {
-      console.log(bookList[books.length].difficulty)
-      setBooks([...books, <Book key={`Book-${books.length}`} id={bookList[books.length].id} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
+      console.log(1)
+      setBooks([<Book key={`Book-${0}`} id={bookList[0].id} name={`${bookList[0].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[0].difficulty} />])
       setPosition(position + 1.4);
     }
   }, [bookList])
 
   useEffect(() => {
     setTimeout(() => {
-      if (books.length >= bookList.length) {
+      console.log(books.length)
+      if (books.length >= bookList.length || books.length == 0) {
           return;
       }
-      setBooks([...books, <Book key={`Book-${books.length}`} id={bookList[books.length].id} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
+      setBooks([...books, <Book key={`Book-${books.length + 1}`} id={bookList[books.length].id} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
       setPosition(position + 1.4);
     }, 100)
   }, [books])

@@ -119,7 +119,7 @@ const page = () => {
           complete: 'border-b-2 text-gray-300 text-sm'
         }} />
         <div className='w-full h-[500px] overflow-hidden'>
-          <Board todolist={todolist} />
+          <Board todolist={todolist} isFetching={getTodoList.isFetchedAfterMount} />
         </div>
         <Footer />
       </div>

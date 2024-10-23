@@ -53,9 +53,25 @@ const page = ({params} : {params: any}) => {
       if(todoData.isFinished) {
         router.push('/todolist/complete')
       }else {
-        router.push('/todolist');
+        router.push('/todolist/todo');
       }
-      
+    }
+
+    const restoreMutation = useMutation({
+      mutationKey: ['restoreTodo'],
+      mutationFn: async () => {
+        return await axios.patch(`http://localhost:4000/schedule/isfinished/${params.id}`, {isFinished: false}, {
+          withCredentials: true
+        })
+      },
+      onError(err) {
+        console.log(err);
+      }
+    })
+
+    const restoreHandler = async () => {
+      await restoreMutation.mutateAsync();
+      router.push('/todolist/todo');
     }
 
     useEffect(()=>{
@@ -109,7 +125,7 @@ const page = ({params} : {params: any}) => {
             <div className='w-18 flex'>
               {todoData.isFinished ? (
                 <>
-                  <div className='mr-1'>복구</div>
+                  <div onClick={restoreHandler} className='mr-1'>복구</div>
                   <div onClick={dltTodo}>삭제</div>
                 </>
                 ) : (

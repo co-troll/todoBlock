@@ -22,9 +22,12 @@ const WriteTodoBtn = ({content, dateArr, difficulty} : {content: string, dateArr
 
     const onClickSave = (e: any) => {
       if(!content) {
-        alert('내용을 입력해주세요');
+        alert("내용을 입력해주세요");
         e.stopPropagation();
-      }else {
+      }else if(!difficulty){
+        alert("난이도를 선택해주세요")
+      }
+      else {
         todoMutation.mutate({content, dateArr, difficulty});
         router.push('/todolist')
       }
