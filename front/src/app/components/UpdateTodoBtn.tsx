@@ -31,6 +31,7 @@ const UpdateTodoBtn = ({content, dateArr, difficulty, paramId} : {content: strin
         e.stopPropagation();
       }else {
         await todoMutation.mutateAsync({content, dateArr, difficulty});
+        router.push(`/todolist/view/${paramId}`)
       }
     }
 
