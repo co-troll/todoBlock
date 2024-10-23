@@ -13,9 +13,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function Board ({ todolist }: any) {
+export default function Board ({ todolist }: { todolist: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] }) {
   // const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
-  const [bookList, setBookList] = useState([]);
+  const [bookList, setBookList] = useState<[{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] | []>([]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
   const [position, setPosition] = useState<number>(2);
   const [clickScreenY, setClickScreenY] = useState<number>(0);
@@ -28,14 +28,14 @@ export default function Board ({ todolist }: any) {
     if(todolist.length > 0) {
       setTimeout(()=>{
         setBookList(todolist);
-      }, 100);
+      }, 1000);
     }
   }, [todolist])
   
   useEffect(()=>{
     if(bookList.length > 0) {
       console.log(bookList[books.length].difficulty)
-      setBooks([...books, <Book key={`Book-${books.length}`} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
+      setBooks([...books, <Book key={`Book-${books.length}`} id={bookList[books.length].id} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
       setPosition(position + 1.4);
     }
   }, [bookList])
@@ -45,7 +45,7 @@ export default function Board ({ todolist }: any) {
       if (books.length >= bookList.length) {
           return;
       }
-      setBooks([...books, <Book key={`Book-${books.length}`} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
+      setBooks([...books, <Book key={`Book-${books.length}`} id={bookList[books.length].id} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
       setPosition(position + 1.4);
     }, 100)
   }, [books])
@@ -53,7 +53,7 @@ export default function Board ({ todolist }: any) {
   const parentFunc = (data: string) => {
     console.log(data);
     console.log(bookList.findIndex((value) => value.content === data), 1);
-    router.push(`http://localhost:3000/todolist/view/${bookList.findIndex((value) => value.content === data) + 1}`)
+    router.push(`http://localhost:3000/todolist/view/${parseInt(data)}`)
     // setBooks([]);
     // setPosition(2);
     // setBookList([...bookList]);
@@ -71,13 +71,13 @@ export default function Board ({ todolist }: any) {
   // }
 
   return (
-    <div className="h-[80vh] flex flex-col">
+    <div className="h-screen flex flex-col">
       <Canvas 
         shadows
         onTouchStart={(e) => {setClickScreenY(e.changedTouches[0]?.screenY)}} 
         onTouchMove={(e) => setMoveScreenY(e.changedTouches[0]?.screenY)}
       >
-        <Camera clickScreenY={clickScreenY} moveScreenY={moveScreenY} />
+        <Camera clickScreenY={clickScreenY} moveScreenY={moveScreenY} initPosition={position} />
         {/* <CameraControls ref={cameraControlRef} /> */}
         {/* <axesHelper args={[5]} />
         <gridHelper args={[20, 20, 0xff0000, 'teal']} /> */}

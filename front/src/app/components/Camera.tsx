@@ -3,8 +3,8 @@ import { useThree } from "@react-three/fiber";
 import { LegacyRef, RefAttributes, RefObject, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-const Camera = ({ clickScreenY, moveScreenY }: { clickScreenY: number, moveScreenY: number }) => {
-    const [position, setPosition] = useState(10);
+const Camera = ({ clickScreenY, moveScreenY, initPosition }: { clickScreenY: number, moveScreenY: number, initPosition: number }) => {
+    const [position, setPosition] = useState(8);
     const [lastScreen, setLastScreen] = useState(clickScreenY);
     const { camera } = useThree(); 
 
