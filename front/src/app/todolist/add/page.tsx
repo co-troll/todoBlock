@@ -16,7 +16,6 @@ const page = () => {
   const [date, setDate] = useState((new Date()));
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [selectDate, setSelectDate] = useState<string[]>([]);
-  const [isDateDelete, setisDeleteDate] = useState<boolean>(false);
   const [content, setContent] = useState<string>('');
 
   const [difficulty, setDifficulty] = useState('');
@@ -41,54 +40,34 @@ const page = () => {
     setContent(e.target.value);
   }, [content])
 
-  const onChangeDate = useCallback((newValue: any) => {
+  const onChangeDate = (newValue: any) => {
     
     const _newValue = formatDate(newValue);
 
     setDate(newValue);
-    setSelectDate([...selectDate, _newValue])
+    const arr = selectDate
+    arr.push(_newValue);
+    setSelectDate(arr)
     setOpenCalendar(false);
-  }, [date]);
+  };
 
   useEffect(() => {
-    if(!isDateDelete) {
-      (document.getElementById('dateBoxes') as HTMLDivElement).innerHTML = '';
-      for(let i = 0; i < selectDate.length; i++) {
-      const select = document.createElement('div');
-      const dltBtn = document.createElement('div');
-      dltBtn.classList.add(`${styles.dateDltBtn}`);
-      dltBtn.onclick = selectDateDelete
-      select.classList.add(`${styles.dateBox}`);
-      select.innerHTML = `${selectDate[i]}`
-      select.append(dltBtn);
-      (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
-      }
-    }else {
-      setisDeleteDate(false);
-    }
+    console.log(selectDate)
   }, [selectDate])
 
   const selectDateDelete = (e: any) => {
-    let index = -1;
+    const index = e.target.getAttribute('data-index');
+    const arr = []
+    console.log('반복')
     for(let i = 0; i < selectDate.length; i++) {
-      if(selectDate[i] === e.target.parentNode.innerHTML.split('<')[0]) {
-        index = i;
+      console.log(index, i)
+      if(parseInt(index) == i) {
+
+      }else {
+        arr.push(selectDate[i]);
       }
     }
-    setisDeleteDate(true);
-    setSelectDate(selectDate.splice(index, 1));
-    (document.getElementById('dateBoxes') as HTMLDivElement).innerHTML = '';
-    for(let i = 0; i < selectDate.length; i++) {
-      const select = document.createElement('div');
-      const dltBtn = document.createElement('div');
-      dltBtn.classList.add(`${styles.dateDltBtn}`);
-      dltBtn.onclick = selectDateDelete
-      select.classList.add(`${styles.dateBox}`);
-      select.innerHTML = `${selectDate[i]}`
-      select.append(dltBtn);
-      (document.getElementById('dateBoxes') as HTMLDivElement).append(select);
-    }
-    console.log(selectDate)
+    setSelectDate(arr);
   };
 
   const onClickCalendarIcon = () => {
@@ -97,6 +76,9 @@ const page = () => {
 
   useEffect(() => {
     const calendar = document.querySelector('#calendarWrap') as HTMLElement;
+    calendar.onclick = () => {
+
+    }
     openCalendar ? calendar.style.display = "block" : calendar.style.display = "none";
   }, [openCalendar]);
 
@@ -123,7 +105,6 @@ const page = () => {
         (document.getElementById(`difficulty_normal`) as HTMLDivElement).style.backgroundColor = "white";
         break;
     }
-    console.log(difficulty);
   }, [difficulty]);
 
   return (
@@ -141,7 +122,12 @@ const page = () => {
                     </span>
                     <span className='text-lg ml-1'>시간</span>
                   </div>
-                    <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'></div>
+                    <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'>
+                      {selectDate.map((el, id) => <div key={id} className={`${styles.dateBox}`}>
+                          {el}
+                        <div data-index={id} onClick={selectDateDelete} className={`${styles.dateDltBtn}`}></div>
+                      </div>)}
+                    </div>
                     <div id='calendarWrap' className='absolute w-full h-full bg-[rgb(0,0,0,0.8)] top-0 left-0 flex justify-center items-center'>
                       <Calendar className={`${styles.calendar} calendar`} onChange={onChangeDate} value={date} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
                     </div>
@@ -149,19 +135,19 @@ const page = () => {
                 <div className='w-full border h-14 border-black mt-3 flex items-center text-lg px-3'>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_easy' data-difficulty='easy' onClick={selectDifficulty}>
-                      <div className='w-4 h-4 border border-black bg-yellow-400 mr-1' data-difficulty='easy'></div>
+                      <div className='w-4 h-4 border border-black bg-[#98fb98] mr-1' data-difficulty='easy'></div>
                       <span data-difficulty='easy'>쉬움</span>
                     </div>
                   </span>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal' onClick={selectDifficulty}>
-                      <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
+                      <div className='w-4 h-4 border border-black bg-[#F8D800] mr-1' data-difficulty='normal'></div>
                       <span data-difficulty='normal'>보통</span>
                     </div>
                   </span>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_hard' data-difficulty='hard' onClick={selectDifficulty}>
-                      <div className='w-4 h-4 border border-black bg-red-400 mr-1' data-difficulty='hard'></div>
+                      <div className='w-4 h-4 border border-black bg-[#EA5455] mr-1' data-difficulty='hard'></div>
                       <span data-difficulty='hard'>어려움</span>
                     </div>
                   </span>

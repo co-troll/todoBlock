@@ -9,10 +9,12 @@ import Image from 'next/image';
 import Header from '../components/Header';
 import HeaderTab from '../components/HeaderTab';
 import Footer from '../components/Footer';
+import Board from '../moecules/Canvas';
+import { CubeDiffculty, CubeDiffcultyKeys } from '../components/Cube';
 
 const page = () => {
   
-  const [todolist, setTodolist] = useState<[{ content: string, dateArr: string[], difficulty: string }] | []>([]);
+  const [todolist, setTodolist] = useState<[{ content: string, dateArr: string[], difficulty: CubeDiffcultyKeys }] | []>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -45,10 +47,10 @@ const page = () => {
 
   // 로딩
   useEffect(() => {
-    const data = async () => {
+    const data = () => {
       try {
-        // console.log(getTodoList.data);
         setIsLoading(true);
+        getTodoList.refetch();
       } catch (error) {
         console.log(error);
       } finally {
@@ -58,10 +60,41 @@ const page = () => {
     data();
   }, [])
 
+  useEffect(()=>{
+    console.log(todolist)
+    getTodoList.refetch();
+  }, [todolist])
+
   // 할 일 리스트 뿌려주기
   useEffect(() => {
-    if (getTodoList.isFetched && (document.getElementById('todoBoxes') as HTMLDivElement)) {
-      setTodolist(getTodoList.data);
+    if (getTodoList.isFetched && !isLoading) {
+      let arr: [{content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] = [];
+      getTodoList.data.map((el: any) => {
+        switch(el.difficulty) {
+          case "easy":
+            arr.push({
+              content: el.content,
+              dateArr: el.dateArr,
+              difficulty: CubeDiffculty.EASY
+            })
+            break;
+          case "normal":
+            arr.push({
+              content: el.content,
+              dateArr: el.dateArr,
+              difficulty: CubeDiffculty.NORMAL
+            })
+            break;
+          case "hard":
+            arr.push({
+              content: el.content,
+              dateArr: el.dateArr,
+              difficulty: CubeDiffculty.HARD
+            })
+            break;
+        }
+      })
+      setTodolist(arr);
     }
   }, [getTodoList.data, isLoading]) // 데이터 가져왔을 때 + 추가에서 취소 눌렀을 때
 
@@ -79,36 +112,9 @@ const page = () => {
           todo: 'border-b-2 text-gray-300 text-sm',
           complete: 'border-b-2 text-gray-300 text-sm'
         }} />
-        <div className={`w-full ${styles.boxHeight}`}></div>
-        {/* <div className='w-full '>
-          <div className='flex justify-between'>
-            <span className='pl-2'>해야 할 일</span>
-            <span className='pr-5'>V</span>
-          </div>
-          <div className='w-full'>
-            <div id='todoBoxes' className='w-full pl-6'>
-              {todolist.map((data, index) => {
-                console.log(data)
-                return (
-                  <li key={index}>하이</li>
-                )
-              }
-              )}
-            </div>
-          </div>
+        <div className='w-full h-[500px] overflow-hidden'>
+          <Board todolist={todolist} />
         </div>
-        <div className='w-full'>
-          <div className='flex justify-between'>
-            <span className='pl-2'>완료된 일</span>
-            <span className='pr-5'>V</span>
-          </div>
-        </div> */}
-        {/* <div className='w-11/12 fixed bottom-10 flex justify-between px-3'> */}
-        {/* <div className='bg-white w-14 h-14 border border-blue-300 rounded-full flex justify-center items-center text-3xl text-blue-500'></div> */}
-        {/* <Link href={'/todolist/add'} className='bg-white w-14 h-14 border border-blue-300 rounded-full flex justify-center items-center text-3xl text-blue-500'>
-            <span className='pb-1'>+</span>
-          </Link> */}
-        {/* </div> */}
         <Footer />
       </div>
     </>
