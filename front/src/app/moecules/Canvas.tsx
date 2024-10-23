@@ -9,9 +9,12 @@ import Book from "../components/Group";
 import { Physics, RigidBody } from "@react-three/rapier";
 import Camera from "../components/Camera";
 import DraggableRigidBody, { DraggableRigidBodyProps } from "../components/DraggableRigidBody";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-export default function Board () {
-  const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
+export default function Board ({ todolist }: { todolist: [{ content: string, difficulty: CubeDiffcultyKeys }]}) {
+  // const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
+  const [bookList, setBookList] = useState<[{ content: string, difficulty: CubeDiffcultyKeys }] | []>([...todolist]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
   const [position, setPosition] = useState<number>(2);
   const [clickScreenY, setClickScreenY] = useState<number>(0);
@@ -24,28 +27,28 @@ export default function Board () {
       if (books.length >= bookList.length) {
           return;
       }
-      setBooks([...books, <Book key={`Book-${books.length}`} name={`${bookList[books.length].name}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].level} />])
+      setBooks([...books, <Book key={`Book-${books.length}`} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
       setPosition(position + 1.4);
     }, 100)
   }, [books])
 
   const parentFunc = (data: string) => {
     console.log(data);
-    bookList.splice(bookList.findIndex((value) => value.name === data), 1);
+    bookList.splice(bookList.findIndex((value) => value.content === data), 1);
     setBooks([]);
     setPosition(2);
     setBookList([...bookList]);
   }
 
-  const handleCreateButton = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { task, level } = e.currentTarget;
-    setBooks([]);
-    setPosition(2);
-    setBookList([...bookList, { name: task.value, level: level.value }]);
-    // setBooks([...books, <Book key={`Book-${books.length}`} name={`Book-${books.length}`} position={position} difficulty={CubeDiffculty.EASY} />])
-    // setPosition(position + 0.8);
-  }
+  // const handleCreateButton = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const { content, difficulty } = e.currentTarget;
+  //   setBooks([]);
+  //   setPosition(2);
+  //   setBookList([...bookList, { content: content.value, difficulty: difficulty.value }]);
+  //   // setBooks([...books, <Book key={`Book-${books.length}`} name={`Book-${books.length}`} position={position} difficulty={CubeDiffculty.EASY} />])
+  //   // setPosition(position + 0.8);
+  // }
 
   return (
     <div className="h-[80vh] flex flex-col">
@@ -70,20 +73,20 @@ export default function Board () {
           </RigidBody>
         </Physics>
       </Canvas>
-      <form
+      {/* <form
         onSubmit={handleCreateButton}
       >
-        <input type="radio"  name="level" value={CubeDiffculty.EASY} defaultChecked />
+        <input type="radio"  name="difficulty" value={CubeDiffculty.EASY} defaultChecked />
         <label>쉬움</label>
-        <input type="radio" name="level" value={CubeDiffculty.NORMAL} />
+        <input type="radio" name="difficulty" value={CubeDiffculty.NORMAL} />
         <label>보통</label>
-        <input type="radio" name="level" value={CubeDiffculty.HARD} />
+        <input type="radio" name="difficulty" value={CubeDiffculty.HARD} />
         <label>어려움</label>
-        <input type="radio" name="level" value={CubeDiffculty.EXTRA} />
+        <input type="radio" name="difficulty" value={CubeDiffculty.EXTRA} />
         <label>매우 어려움</label>
-        <input type="text" name="task" />
+        <input type="text" name="content" />
         <button type="submit">제출</button>
-      </form>
+      </form> */}
       {/* <button onClick={handleCreateButton}>생성</button> */}
     </div>
   );
