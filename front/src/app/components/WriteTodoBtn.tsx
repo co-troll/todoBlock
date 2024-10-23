@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import instance from '../instance';
 
 const WriteTodoBtn = ({content, dateArr, difficulty} : {content: string, dateArr: string[], difficulty: string}) => {
 
@@ -11,7 +11,7 @@ const WriteTodoBtn = ({content, dateArr, difficulty} : {content: string, dateArr
     const todoMutation = useMutation({
       mutationFn: async (data: {content: string, dateArr: string[], difficulty: string}) => {
         console.log(data);
-        return await axios.post('http://localhost:4000/schedule', data, {
+        return await instance.post('schedule', data, {
           withCredentials: true
         });
       },

@@ -1,12 +1,12 @@
 'use client'
 
-import axios from 'axios'
 import styled from '../style.module.css'
 import React, { useEffect, useRef, useState } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import instance from '../instance'
 
 const SignupForm = () => {
 
@@ -60,7 +60,11 @@ const SignupForm = () => {
 
         if (isPhoneNumberValid) {
             try {
-                const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
+                const response = await instance({
+                    method: "post",
+                    url: 'http://localhost:4000/auth/SMSAuthentication', 
+                    data: { number: phoneValue }
+                }) 
                 console.log(response.data) // 인증번호 콘솔
                 // alert('인증번호 전송이 완료되었습니다.')
                 setSMSConfirm(response.data)
@@ -99,7 +103,10 @@ const SignupForm = () => {
         const isIdValid = regexId.test(uid);
 
         try {
-            const response = await axios.get(`http://localhost:4000/users/check/${uid}`)
+            const response = await instance({
+                method: "get",
+                url: `http://localhost:4000/users/check/${uid}`
+            }) 
 
             if (response.status === 200) {
                 if (!isIdValid) {
@@ -146,12 +153,16 @@ const SignupForm = () => {
 
         if (Confirm) {
             try {
-                const response = await axios.post('http://localhost:4000/users/signup', {
-                    uid: uid,
-                    upw: upw,
-                    phoneNumber: uPhone,
+                const response = await instance({
+                    
+                    method: "post", 
+                    url: 'users/signup', 
+                    data: {
+                        uid: uid,
+                        upw: upw,
+                        phoneNumber: uPhone,
+                    }
                 });
-
                 router.push('/signup/success')
 
             } catch (error: any) {

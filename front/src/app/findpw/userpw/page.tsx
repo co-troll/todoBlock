@@ -2,8 +2,8 @@
 
 import BackDiv from '@/app/components/BackDiv';
 import Line from '@/app/components/Line';
+import instance from '@/app/instance';
 import { userInputAtom } from '@/app/state/Atom';
-import axios from 'axios';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react'
@@ -25,7 +25,7 @@ const page = () => {
             alert('비밀번호가 일치하지 않습니다.')
         }else{
             try{
-                const response = await axios.patch(`http://localhost:4000/users/${userInfo.uid}`, {upw: pwInput.current.value})
+                const response = await instance.patch(`users/${userInfo.uid}`, {upw: pwInput.current.value})
                 router.push('/findpw/userpw/success')
             }catch(error){
                 console.error('에러 발생', error)

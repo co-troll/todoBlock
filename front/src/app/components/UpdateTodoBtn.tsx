@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import instance from '../instance';
 
 const UpdateTodoBtn = ({content, dateArr, difficulty, paramId} : {content: string, dateArr: string[], difficulty: string, paramId: string}) => {
 
@@ -13,7 +13,7 @@ const UpdateTodoBtn = ({content, dateArr, difficulty, paramId} : {content: strin
     const todoMutation = useMutation({
       mutationFn: async (data: {content: string, dateArr: string[], difficulty: string}) => {
         console.log(data);
-        return await axios.patch(`http://localhost:4000/schedule/update/${paramId}`, data, {
+        return await instance.patch(`schedule/update/${paramId}`, data, {
           withCredentials: true
         });
       },

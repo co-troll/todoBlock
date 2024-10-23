@@ -1,10 +1,10 @@
 'use client'
 
-import axios from 'axios'
 import React, { useRef } from 'react'
 import Input from '../components/Input'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import instance from '../instance';
 
 const LoginForm = () => {
 
@@ -19,10 +19,7 @@ const LoginForm = () => {
         const upw = upwInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/auth/login', { uid, upw },
-                {
-                    withCredentials: true,
-                }
+            const response = await instance.post('auth/login', { uid, upw },
             );
 
             if (response.status === 200) {

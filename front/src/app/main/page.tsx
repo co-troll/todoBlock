@@ -2,7 +2,8 @@ import Board from "../moecules/Canvas";
 
 const page = () => {
     return (
-        <Board />
+        // <Board />
+        <></>
     );
 }
 
