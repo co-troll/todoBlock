@@ -1,5 +1,5 @@
 'use client'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -17,6 +17,8 @@ const page = ({params} : {params: any}) => {
   const [todoData, setTodoData] = useState({dateArr: ["test"], content: 'd', isFinished: ""});
   const [selectDate, setSelectDate] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const queryClient = useQueryClient();
 
     const getTodoData = useQuery({
         queryKey: ['viewTodo'],
@@ -40,8 +42,21 @@ const page = ({params} : {params: any}) => {
       },
       onError(error) {
         console.log(error);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['todolist']);
       }
     })
+
+    const dltTodo = async () => {
+      await deleteTodoList.mutateAsync();
+      if(todoData.isFinished) {
+        router.push('/todolist/complete')
+      }else {
+        router.push('/todolist');
+      }
+      
+    }
 
     useEffect(()=>{
       getTodoData.refetch();
@@ -50,8 +65,9 @@ const page = ({params} : {params: any}) => {
     }, [])
 
     useEffect(()=>{
+      getTodoData.refetch();
       setIsLoading(true)
-      if(getTodoData.isFetchedAfterMount) {
+      if(getTodoData.isFetchedAfterMount && getTodoData.data) {
         console.log("됨")
         setIsLoading(false);
         setTodoData(getTodoData.data);
@@ -94,12 +110,12 @@ const page = ({params} : {params: any}) => {
               {todoData.isFinished ? (
                 <>
                   <div className='mr-1'>복구</div>
-                  <div>삭제</div>
+                  <div onClick={dltTodo}>삭제</div>
                 </>
                 ) : (
                 <>
                   <Link className='mr-1' href={`/todolist/update/${params.id}`}>수정</Link>
-                  <div>삭제</div>
+                  <div onClick={dltTodo}>삭제</div>
                 </>
               )
 

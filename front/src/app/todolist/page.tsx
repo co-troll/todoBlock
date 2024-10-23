@@ -102,7 +102,7 @@ const page = () => {
       })
       setTodolist(arr);
     }
-  }, [getTodoList.data, isLoading]) // 데이터 가져왔을 때 + 추가에서 취소 눌렀을 때
+  }, [getTodoList.data, isLoading, getTodoList.isFetchedAfterMount]) // 데이터 가져왔을 때 + 추가에서 취소 눌렀을 때
 
   // 로딩 될 때
   if (isLoading) {
