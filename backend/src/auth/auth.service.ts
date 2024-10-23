@@ -58,7 +58,7 @@ export class AuthService {
       .catch(err => console.error('Error sending SMS:', err));
 
 
-    return "인증 코드를 정상적으로 전송하였습니다.";
+    return verificationCode;
   }
 
   // 데이터 베이스 상에 아이디 존재하면 인증번호를 보냄
