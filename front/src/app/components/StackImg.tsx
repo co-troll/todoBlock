@@ -1,9 +1,11 @@
 import Image from 'next/image'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
-const StackImg = ({className} : {className : string}) => {
+const StackImg = ({ className }: { className?: string }) => {
     return (
-        <div className={`w-full relative overflow-hidden ${className}`}><Image fill src='/stack.png' alt='stack' className='object-cover' /></div>
+        <div className={`w-full flex items-center justify-center relative ${className}`}>
+            <Image src='/logo.png' alt='logo' width={350} height={350} className='pt-4 object-cover flex justify-center items-center' />
+        </div>
     )
 }
 

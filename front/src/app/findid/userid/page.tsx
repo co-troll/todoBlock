@@ -4,6 +4,7 @@ import BackDiv from '@/app/components/BackDiv'
 import Line from '@/app/components/Line';
 import { urlAtom, userInputAtom } from '@/app/state/Atom';
 import { useAtom, useAtomValue } from 'jotai'
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const page = () => {
@@ -12,7 +13,7 @@ const page = () => {
     const [userInput, setUserInput] = useAtom(userInputAtom);
     const router = useRouter();
 
-    if(!url){
+    if (!url) {
         setUrl(true);
     }
 
@@ -26,12 +27,15 @@ const page = () => {
     }
 
     return (
-        <div className='w-full flex flex-col gap-5'>
+        <div className='w-full flex flex-col gap-10'>
             <div>
                 <BackDiv text='아이디 찾기' />
                 <Line color='border-gray-300 border-[1px]' />
             </div>
-            <div className='flex flex-col w-full px-10 gap-10'>
+            <div className='w-full flex justify-center items-center'>
+                <Image src={'/user.png'} alt={'유저 이미지'} width={300} height={300} />
+            </div>
+            <div className='flex flex-col w-full px-10 gap-6'>
                 <div className='flex flex-col text-3xl gap-2'>
                     <p>입력한 정보와 일치하는 </p>
                     <p>아이디를 확인해 주세요.</p>
