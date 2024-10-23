@@ -26,7 +26,10 @@ const page = () => {
         withCredentials: true
       });
       return await response.data;
-    }
+    },
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
   })
 
   // const getLogout = useQuery({
@@ -54,7 +57,7 @@ const page = () => {
       } catch (error) {
         console.log(error);
       } finally {
-        setIsLoading(false);
+          setIsLoading(false)
       }
     }
     data();
@@ -68,11 +71,12 @@ const page = () => {
   // 할 일 리스트 뿌려주기
   useEffect(() => {
     if (getTodoList.isFetched && !isLoading) {
-      let arr: [{content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] = [];
+      const arr: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] = [];
       getTodoList.data.map((el: any) => {
         switch(el.difficulty) {
           case "easy":
             arr.push({
+              id: el.id,
               content: el.content,
               dateArr: el.dateArr,
               difficulty: CubeDiffculty.EASY
@@ -80,6 +84,7 @@ const page = () => {
             break;
           case "normal":
             arr.push({
+              id: el.id,
               content: el.content,
               dateArr: el.dateArr,
               difficulty: CubeDiffculty.NORMAL
@@ -87,6 +92,7 @@ const page = () => {
             break;
           case "hard":
             arr.push({
+              id: el.id,
               content: el.content,
               dateArr: el.dateArr,
               difficulty: CubeDiffculty.HARD

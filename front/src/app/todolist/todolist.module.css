@@ -10,7 +10,7 @@
   }
   
   .dateBox {
-    @apply w-32 h-9 border border-black text-base rounded-lg flex items-center justify-center mb-1 relative
+    @apply w-28 h-9 border border-black text-base rounded-lg flex items-center justify-center mb-1 relative
   }
   
   .dateDltBtn {

@@ -1,5 +1,5 @@
 'use client'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -7,26 +7,57 @@ import dltBox from '../../../../../public/deleteBox.png'
 import styles from '../../todolist.module.css'
 import ClockImage from '../../../../../public/clock.png'
 import { CubeDiffculty } from '@/app/components/Cube'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const page = ({params} : {params: any}) => {
-
-    const [todoData, setTodoData] = useState({dateArr: ["test"], content: 'd'});
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  const router = useRouter();
+  
+  const [todoData, setTodoData] = useState({dateArr: ["test"], content: 'd', isFinished: ""});
+  const [selectDate, setSelectDate] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const getTodoData = useQuery({
-        queryKey: ['todolist'],
+        queryKey: ['viewTodo'],
         queryFn: async () => {
             const response = await axios.get(`http://localhost:4000/schedule/view/${params.id}`, {
                 withCredentials: true
             })
-            return await response.data
-        }
+            return await response.data;
+        },
+        staleTime: 0,
+        refetchOnWindowFocus: false,
+        refetchOnMount: true,
+    })
+
+    const deleteTodoList = useMutation({
+      mutationKey: ['delteTodo'],
+      mutationFn: async () => {
+        return await axios.delete(`http://localhost:4000/schedule/delete/${params.id}`, {
+          withCredentials: true
+        });
+      },
+      onError(error) {
+        console.log(error);
+      }
     })
 
     useEffect(()=>{
+      getTodoData.refetch();
         console.log(params, 1)
         setIsLoading(true)
     }, [])
+
+    useEffect(()=>{
+      setIsLoading(true)
+      if(getTodoData.isFetchedAfterMount) {
+        console.log("됨")
+        setIsLoading(false);
+        setTodoData(getTodoData.data);
+        setSelectDate(getTodoData.data.dateArr);
+      }
+    }, [getTodoData.isFetchedAfterMount])
 
     useEffect(()=>{
         setIsLoading(true);
@@ -39,17 +70,6 @@ const page = ({params} : {params: any}) => {
             console.log(error);
         }
     }, [todoData])
-    
-    useEffect(()=>{
-        if(getTodoData.data) {
-          console.log(getTodoData.data)
-          if(getTodoData.data[0]) {
-            setTodoData(getTodoData.data[0])
-          }else {
-            setTodoData(getTodoData.data);
-          }
-        }
-    }, [getTodoData.data])
 
     useEffect(() => {
         console.log(isLoading)
@@ -58,6 +78,8 @@ const page = ({params} : {params: any}) => {
         }
     }, [isLoading])
 
+  
+
     if(isLoading) {
         return <div>로딩중</div>
     }
@@ -65,10 +87,23 @@ const page = ({params} : {params: any}) => {
   return (
     <div className='w-full flex flex-col items-center'>
         <div className='w-full flex justify-between items-center'>
-            <div className='w-10'></div>
+            <div className='w-30' onClick={() => {
+              router.push('/todolist')
+            }}>메인으로 돌아가기</div>
             <div className='w-18 flex'>
-                <div>수정</div>
-                <div>삭제</div>
+              {todoData.isFinished ? (
+                <>
+                  <div className='mr-1'>복구</div>
+                  <div>삭제</div>
+                </>
+                ) : (
+                <>
+                  <Link className='mr-1' href={`/todolist/update/${params.id}`}>수정</Link>
+                  <div>삭제</div>
+                </>
+              )
+
+              }
             </div>
         </div>
         <div className='w-full flex justify-center'>
@@ -77,7 +112,7 @@ const page = ({params} : {params: any}) => {
               <h1 className='text-2xl'>새 할일 리스트</h1>
             </div>
             <div className='w-full flex flex-col items-center mt-8'>
-                <textarea name="" id="content" className={`border border-black w-full h-24 text-lg resize-none overflow-hidden`}></textarea>
+                <textarea name="" id="content" className={`border border-black w-full h-24 text-lg resize-none overflow-hidden p-1 px-2`} readOnly></textarea>
                 <div className='w-full mt-4'>
                   <div className='flex items-center h-14 border rounded-sm px-2'>
                     <span>
@@ -85,7 +120,11 @@ const page = ({params} : {params: any}) => {
                     </span>
                     <span className='text-lg ml-1'>시간</span>
                   </div>
-                    <div id='dateBoxes' className='w-25 text-3xl mt-4 grid grid-cols-3'></div>
+                    <div id='dateBoxes' className='w-full text-3xl mt-4 grid grid-cols-3'>
+                    {selectDate.map((el, id) => <div key={id} className={`${styles.dateBox}`}>
+                          {el}
+                      </div>)}
+                    </div>
                     {/* <div id='calendarWrap' className='absolute w-full h-full bg-[rgb(0,0,0,0.8)] top-0 left-0 flex justify-center items-center'>
                       <Calendar className={`${styles.calendar} calendar`} locale='ko' formatDay={(locale, date) => date.toLocaleString('en', {day: 'numeric'})} />
                     </div> */}

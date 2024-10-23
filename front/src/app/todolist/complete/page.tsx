@@ -4,10 +4,13 @@ import Header from '@/app/components/Header'
 import HeaderTab from '@/app/components/HeaderTab'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
     const [todolist, setTodolist] = useState<any[]>([]);
+
+    const router = useRouter();
 
     // 스케쥴 완료된거 조회
 
@@ -18,7 +21,10 @@ const page = () => {
                 withCredentials: true
             })
             return await response.data;
-        }
+        },
+        staleTime: 0,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
     })
 
     useEffect(() => {
@@ -50,7 +56,7 @@ const page = () => {
                     {todolist.map((data, index) => {
                         // console.log(data)
                         return (
-                            <li key={index} className='w-full h-12 border-black border-[1px] rounded-md list-none'>
+                            <li onClick={()=>router.push(`/todolist/view/${data.id}`)} key={index} className='w-full h-12 border-black border-[1px] rounded-md list-none'>
                                 <div className='w-full h-2/3 border border-black flex p-1'>
                                     <div data-index={data.id} className='w-5 h-5 border border-black rounded-full'></div>
                                     <div className='ml-2'>
