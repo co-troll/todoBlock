@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Header from '../components/Header';
 import HeaderTab from '../components/HeaderTab';
 import Footer from '../components/Footer';
+import Board from '../moecules/Canvas';
 
 const page = () => {
   
@@ -47,8 +48,8 @@ const page = () => {
   useEffect(() => {
     const data = async () => {
       try {
-        // console.log(getTodoList.data);
         setIsLoading(true);
+        getTodoList.refetch();
       } catch (error) {
         console.log(error);
       } finally {
@@ -79,36 +80,9 @@ const page = () => {
           todo: 'border-b-2 text-gray-300 text-sm',
           complete: 'border-b-2 text-gray-300 text-sm'
         }} />
-        <div className={`w-full ${styles.boxHeight}`}></div>
-        {/* <div className='w-full '>
-          <div className='flex justify-between'>
-            <span className='pl-2'>해야 할 일</span>
-            <span className='pr-5'>V</span>
-          </div>
-          <div className='w-full'>
-            <div id='todoBoxes' className='w-full pl-6'>
-              {todolist.map((data, index) => {
-                console.log(data)
-                return (
-                  <li key={index}>하이</li>
-                )
-              }
-              )}
-            </div>
-          </div>
+        <div className='w-full h-[500px] overflow-hidden'>
+          <Board />
         </div>
-        <div className='w-full'>
-          <div className='flex justify-between'>
-            <span className='pl-2'>완료된 일</span>
-            <span className='pr-5'>V</span>
-          </div>
-        </div> */}
-        {/* <div className='w-11/12 fixed bottom-10 flex justify-between px-3'> */}
-        {/* <div className='bg-white w-14 h-14 border border-blue-300 rounded-full flex justify-center items-center text-3xl text-blue-500'></div> */}
-        {/* <Link href={'/todolist/add'} className='bg-white w-14 h-14 border border-blue-300 rounded-full flex justify-center items-center text-3xl text-blue-500'>
-            <span className='pb-1'>+</span>
-          </Link> */}
-        {/* </div> */}
         <Footer />
       </div>
     </>

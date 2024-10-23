@@ -61,7 +61,7 @@ export class AuthController {
     res.cookie('userToken', userToken, {
       httpOnly : true
     })
-    res.status(200).json({message : "소셜 로그인 성공"})
+    res.redirect('http://localhost:3000/todolist');
   }
 
     // 아이디 찾기
