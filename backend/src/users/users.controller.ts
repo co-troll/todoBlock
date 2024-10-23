@@ -4,7 +4,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FindUserDto } from './dto/find-user.dto';
 import { RequestUserDto } from './dto/request-user-dto';
 import { JwtAuthGuard } from 'src/guards/jwtGuard';
 
@@ -39,15 +38,7 @@ export class UsersController {
     return res.status(200).json({message : "No problem"})
   }
 
-  // 비밀번호 찾기
-  @ApiOperation({summary : "비밀번호 찾기"})
-  @ApiResponse({status : 201, description : "비밀번호가 없을 시 404에러 반환", type : FindUserDto})
-  @Post('findingpassword')
-  async findPassword(
-    @Body() findUserDto : FindUserDto
-  ) {
-    return await this.usersService.findUserID(findUserDto);
-  }
+
 
   // 유저 아이디 전송
   @ApiOperation({summary : "유저 아이디 습득"})

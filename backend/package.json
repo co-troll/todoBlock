@@ -32,13 +32,17 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "firebase": "^10.14.1",
+    "firebase-admin": "^12.6.0",
     "mysql2": "^3.11.3",
     "passport-kakao": "^1.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
-    "swagger-ui-express": "^5.0.1"
+    "solapi": "^5.3.1",
+    "swagger-ui-express": "^5.0.1",
+    "twilio": "^5.3.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

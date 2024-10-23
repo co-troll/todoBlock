@@ -1,23 +1,79 @@
-.backBtn::after{
-    position:absolute;
-    content:' ';
-    width:2px;
-    height:12px;
+.backBtn {
+    position: absolute;
+    display: flex;
+    width: 50px;
+    height: 45px;
+    padding-left: 2.5px;
+    padding-top: 2.5px;
+}
+
+.backBtn:hover {
+    cursor: pointer;
+}
+
+.backBtn::after {
+    position: absolute;
+    content: ' ';
+    width: 2px;
+    height: 12px;
     background-color: black;
-    transform:rotate(45deg);
-    top:15px;
-    left:25px;
+    transform: rotate(45deg);
+    top: 15px;
+    left: 25px;
     border-radius: 1px;
 }
 
-.backBtn::before{
-    position:absolute;
-    content:' ';
-    width:2px;
-    height:12px;
+.backBtn::before {
+    position: absolute;
+    content: ' ';
+    width: 2px;
+    height: 12px;
     background-color: black;
-    transform:rotate(135deg);
-    top:22.5px;
-    left:25px;
+    transform: rotate(135deg);
+    top: 22.5px;
+    left: 25px;
     border-radius: 1px;
 }
+
+.greenText {
+    display: none;
+    position: absolute;
+    color: green;
+    font-size: medium;
+    left: 80px;
+}
+
+@keyframes vib {
+    0% {
+        transform: translateX(-1px);
+    }
+
+    25% {
+        transform: translateX(1px);
+    }
+
+    50% {
+        transform: translateX(-1px);
+    }
+
+    75% {
+        transform: translateX(1px);
+    }
+
+    100% {
+        transform: translateX(-1px);
+    }
+}
+
+.redText {
+    display: hidden;
+    position: absolute;
+    color: red;
+    font-size: medium;
+    left: 80px;
+    animation-name: vib;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+
