@@ -1,6 +1,5 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Schedule } from './entities/schedule.entity';
 import { Op } from 'sequelize';
