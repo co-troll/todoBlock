@@ -39,9 +39,6 @@ export class AuthService {
 
   // 문자 인증 보내는 코드
   async SMSAuthentication(phoneNumber: string): Promise<string> {
-
-    await this.userService.findUserID(phoneNumber);
-
     const messageService = new SolapiMessageService(process.env.API_KEY, process.env.API_SECRET);
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
