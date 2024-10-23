@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import styles from './todolist.module.css';
 import Image from 'next/image';
 import Header from '../components/Header';
@@ -11,6 +10,7 @@ import HeaderTab from '../components/HeaderTab';
 import Footer from '../components/Footer';
 import Board from '../moecules/Canvas';
 import { CubeDiffculty, CubeDiffcultyKeys } from '../components/Cube';
+import instance from '../instance';
 
 const page = () => {
   
@@ -22,9 +22,11 @@ const page = () => {
   const getTodoList = useQuery({
     queryKey: ['todolist'],
     queryFn: async () => {
-      const response = await axios.get('http://localhost:4000/schedule/view', {
-        withCredentials: true
+      const response = await instance({
+        method: "get",
+        url: 'schedule/view'
       });
+      console.log(response)
       return await response.data;
     },
     staleTime: 0,
@@ -64,7 +66,7 @@ const page = () => {
   }, [])
 
   useEffect(()=>{
-    console.log(todolist)
+    console.log(todolist, 44)
     getTodoList.refetch();
   }, [todolist])
 
@@ -118,8 +120,8 @@ const page = () => {
           todo: 'border-b-2 text-gray-300 text-sm',
           complete: 'border-b-2 text-gray-300 text-sm'
         }} />
-        <div className='w-full h-[500px] overflow-hidden'>
-          <Board todolist={todolist} isFetching={getTodoList.isFetchedAfterMount} />
+        <div className='w-full h-[88vh] overflow-hidden'>
+          <Board todolist={todolist}/>
         </div>
         <Footer />
       </div>

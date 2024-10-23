@@ -11,10 +11,10 @@ const Footer = () => {
     const router = useRouter();
 
     return (
-        <div className='w-full h-12 flex  bg-white justify-between items-center overflow-hidden fixed bottom-0'>
-            <div onClick={() => router.push('/todolist')} className='w-2/5 flex justify-center items-center'><Image src={'/home.png'} alt={'home'} width={30} height={30} /></div>
+        <div className='w-full h-full flex  justify-between items-center overflow-hidden fixed bottom-0 pointer-events-none'>
+            {/* <div onClick={() => router.push('/todolist')} className='w-2/5 flex justify-center items-center'><Image src={'/home.png'} alt={'home'} width={30} height={30} /></div> */}
             <Link href={'/todolist/add'} className={styles.plusBtn}><Image src={'/plus2.png'} alt={'plus.png'} width={30} height={30} /></Link>
-            <div className='w-2/5 flex justify-center items-center'><Image src={'/config.png'} alt={'config'} width={30} height={30} /></div>
+            {/* <div className='w-2/5 flex justify-center items-center'><Image src={'/config.png'} alt={'config'} width={30} height={30} /></div> */}
         </div>
     )
 }

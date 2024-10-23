@@ -4,6 +4,7 @@ import "./globals.css";
 import { Provider } from "jotai";
 import ReactQueryProviders from "./components/ReactQueryProviders";
 import { Yeon_Sung } from "next/font/google";
+import UserCheck from "./components/UserCheck";
 
 
 const geistSans = localFont({
@@ -19,6 +20,7 @@ const geistMono = localFont({
 
 
 const yeonsung = Yeon_Sung({ weight: ['400'], preload:false, display: 'swap'});
+
 
 export const metadata: Metadata = {
   title: "todoBlock",

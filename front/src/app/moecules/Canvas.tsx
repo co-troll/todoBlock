@@ -1,19 +1,17 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { FormEvent, FormEventHandler, Suspense, useEffect, useRef, useState } from "react";
+import { FormEvent, FormEventHandler, Suspense, use, useEffect, useRef, useState } from "react";
 import Group from "../components/Group";
 import Cube, { CubeDiffculty, CubeDiffcultyKeys, CubeLength, CubePosition, CubeType } from "../components/Cube";
 import { Box, CameraControls, OrbitControls, OrthographicCamera, useTrail, SoftShadows } from "@react-three/drei";
 import Book from "../components/Group";
 import { Physics, RigidBody } from "@react-three/rapier";
 import Camera from "../components/Camera";
-import DraggableRigidBody, { DraggableRigidBodyProps } from "../components/DraggableRigidBody";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function Board ({ todolist, isFetching }: { todolist: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}], isFetching: any }) {
+export default function Board ({ todolist }: { todolist: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] }) {
   // const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
   const [bookList, setBookList] = useState<[{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] | []>([]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
@@ -21,10 +19,12 @@ export default function Board ({ todolist, isFetching }: { todolist: [{id: numbe
   const [clickScreenY, setClickScreenY] = useState<number>(0);
   const [moveScreenY, setMoveScreenY] = useState<number>(0);
   const router = useRouter();
+  const [init, setInit] = useState<boolean>(true);
 
   // const bookList = ["11", "22", "33", "44"];
 
   useEffect(()=>{
+    console.log(todolist.length, 11)
     if(todolist.length > 0) {
       setTimeout(()=>{
       }, 1000);
@@ -33,10 +33,11 @@ export default function Board ({ todolist, isFetching }: { todolist: [{id: numbe
   }, [todolist])
   
   useEffect(()=>{
-    if(bookList.length > 0) {
-      console.log(1)
-      setBooks([<Book key={`Book-${0}`} id={bookList[0].id} name={`${bookList[0].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[0].difficulty} />])
+    if(bookList.length > 0 && init) {
+      console.log(133)
+      setBooks([<Book key={`Book-${0}`} id={bookList[0]!.id} name={`${bookList[0]!.content}`} parentFunc={parentFunc} position={position} difficulty={bookList[0]!.difficulty} />])
       setPosition(position + 1.4);
+      setInit(false);
     }
   }, [bookList])
 
@@ -72,7 +73,7 @@ export default function Board ({ todolist, isFetching }: { todolist: [{id: numbe
   // }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden">
       <Canvas 
         shadows
         onTouchStart={(e) => {setClickScreenY(e.changedTouches[0]?.screenY)}} 

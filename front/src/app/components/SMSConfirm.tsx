@@ -1,7 +1,7 @@
 'use client'
 
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
+import instance from '../instance';
 
 const SMSConfirm = () => {
     const [smsConfirm, setSMSConfirm] = useState('');
@@ -48,7 +48,7 @@ const SMSConfirm = () => {
         const phoneValue = phoneInput.current.value;
 
         try {
-            const response = await axios.post('http://localhost:4000/auth/SMSAuthentication', { number: phoneValue })
+            const response = await instance.post('auth/SMSAuthentication', { number: phoneValue })
             console.log(response.data) // 인증번호 콘솔
             // alert('인증번호 전송이 완료되었습니다.')
             setSMSConfirm(response.data)

@@ -2,8 +2,8 @@
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
 import HeaderTab from '@/app/components/HeaderTab'
+import instance from '@/app/instance'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -17,8 +17,9 @@ const page = () => {
     const getCompleteTodolist = useQuery({
         queryKey: ['complete'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:4000/schedule/view?status=finished', {
-                withCredentials: true
+            const response = await instance({
+                method: "get",
+                url: 'schedule/view?status=finished'
             })
             return await response.data;
         },
@@ -56,15 +57,15 @@ const page = () => {
                     {todolist.map((data, index) => {
                         // console.log(data)
                         return (
-                            <li onClick={()=>router.push(`/todolist/view/${data.id}`)} key={index} className='w-full h-12 border-black border-[1px] rounded-md list-none'>
+                            <li onClick={()=>router.push(`/todolist/view/${data.id}`)} key={index} className='w-full h-max border-black border-[1px] rounded-md list-none'>
                                 <div className='w-full h-2/3 border border-black flex p-1'>
-                                    <div data-index={data.id} className='w-5 h-5 border border-black rounded-full'></div>
+                                    <div data-index={data.id} className='w-5 h-5 border border-black rounded-full flex justify-center items-center'>✔</div>
                                     <div className='ml-2'>
                                         {data.content}
                                     </div>
                                 </div>
                                 <div className='w-full'>
-                                    <div className='flex'>
+                                    <div className='flex h-max'>
                                         {data.dateArr.map((el: string, id: number)=>{
                                             return (
                                                 <div key={id} className='mr-2'>{el}</div>
