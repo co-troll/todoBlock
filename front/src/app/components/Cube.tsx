@@ -26,7 +26,7 @@ type CubeLengthKeys = (typeof CubeLength)[keyof typeof CubeLength];
 
 export const CubePosition = {
   FLOOR: [0, (FLOOR_HEIGHT / 2), 0],
-  WALL: [-(BOOK_SIZE / 2), (BOOK_HEIGHT / 2), 0],
+  WALL: [-(BOOK_SIZE / 2 - FLOOR_HEIGHT / 2), (BOOK_HEIGHT / 2), 0],
   CENTER: [0, (BOOK_HEIGHT / 2), 0],
   TOP: [0, (BOOK_HEIGHT - (FLOOR_HEIGHT / 2)), 0]
 } as const;
@@ -55,11 +55,15 @@ interface Props {
   name? : string;
 }
 
+
+
 const Cube = (props: Props) => {
   const mesh = useRef<THREE.Mesh>(null!);
   useFrame(() => {
     // mesh.current.rotation.z += 0.025;
   })
+
+  const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; //한글
 
   return (
     <>
@@ -83,7 +87,11 @@ const Cube = (props: Props) => {
           rotation={[THREE.MathUtils.degToRad(0), THREE.MathUtils.degToRad(-90), THREE.MathUtils.degToRad(0)]}
           color={"black"}
         >
-          {props.name}
+          {
+            korean.test(props.name!) ? 
+            props.name!.length > 10 ? props.name!.substring(0, 9) + "..." : props.name! : 
+            props.name!.length > 15 ? props.name!.substring(0, 14) + "..." : props.name!
+          }
         </Text> : <></>}
         <meshStandardMaterial color={props.type === CubeType.CENTER ? "white" : props.diff} roughness={100}/>
       </mesh>
