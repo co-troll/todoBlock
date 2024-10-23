@@ -11,17 +11,35 @@ import Camera from "../components/Camera";
 import DraggableRigidBody, { DraggableRigidBodyProps } from "../components/DraggableRigidBody";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function Board ({ todolist }: { todolist: [{ content: string, difficulty: CubeDiffcultyKeys }]}) {
+export default function Board ({ todolist }: any) {
   // const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
-  const [bookList, setBookList] = useState<[{ content: string, difficulty: CubeDiffcultyKeys }] | []>([...todolist]);
+  const [bookList, setBookList] = useState([]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
   const [position, setPosition] = useState<number>(2);
   const [clickScreenY, setClickScreenY] = useState<number>(0);
   const [moveScreenY, setMoveScreenY] = useState<number>(0);
+  const router = useRouter();
 
   // const bookList = ["11", "22", "33", "44"];
+
+  useEffect(()=>{
+    if(todolist.length > 0) {
+      setTimeout(()=>{
+        setBookList(todolist);
+      }, 100);
+    }
+  }, [todolist])
   
+  useEffect(()=>{
+    if(bookList.length > 0) {
+      console.log(bookList[books.length].difficulty)
+      setBooks([...books, <Book key={`Book-${books.length}`} name={`${bookList[books.length].content}`} parentFunc={parentFunc} position={position} difficulty={bookList[books.length].difficulty} />])
+      setPosition(position + 1.4);
+    }
+  }, [bookList])
+
   useEffect(() => {
     setTimeout(() => {
       if (books.length >= bookList.length) {
@@ -34,10 +52,12 @@ export default function Board ({ todolist }: { todolist: [{ content: string, dif
 
   const parentFunc = (data: string) => {
     console.log(data);
-    bookList.splice(bookList.findIndex((value) => value.content === data), 1);
-    setBooks([]);
-    setPosition(2);
-    setBookList([...bookList]);
+    console.log(bookList.findIndex((value) => value.content === data), 1);
+    router.push(`http://localhost:3000/todolist/view/${bookList.findIndex((value) => value.content === data) + 1}`)
+    // setBooks([]);
+    // setPosition(2);
+    // setBookList([...bookList]);
+    
   }
 
   // const handleCreateButton = (e: FormEvent<HTMLFormElement>) => {

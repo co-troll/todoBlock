@@ -6,10 +6,11 @@ import React, { useEffect, useState } from 'react'
 import dltBox from '../../../../../public/deleteBox.png'
 import styles from '../../todolist.module.css'
 import ClockImage from '../../../../../public/clock.png'
+import { CubeDiffculty } from '@/app/components/Cube'
 
 const page = ({params} : {params: any}) => {
 
-    const [todoData, setTodoData] = useState({id: -1, content: 'd'});
+    const [todoData, setTodoData] = useState({dateArr: ["test"], content: 'd'});
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const getTodoData = useQuery({
@@ -24,12 +25,14 @@ const page = ({params} : {params: any}) => {
 
     useEffect(()=>{
         console.log(params, 1)
+        setIsLoading(true)
     }, [])
 
     useEffect(()=>{
         setIsLoading(true);
         try {
-            if(todoData.id !== -1) {
+          console.log(todoData)
+            if(todoData.dateArr[0] !== "test") {
                 setIsLoading(false);
             }
         } catch (error) {
@@ -39,7 +42,12 @@ const page = ({params} : {params: any}) => {
     
     useEffect(()=>{
         if(getTodoData.data) {
+          console.log(getTodoData.data)
+          if(getTodoData.data[0]) {
+            setTodoData(getTodoData.data[0])
+          }else {
             setTodoData(getTodoData.data);
+          }
         }
     }, [getTodoData.data])
 
@@ -85,19 +93,19 @@ const page = ({params} : {params: any}) => {
                 <div className='w-full border h-14 border-black mt-3 flex items-center text-lg px-3'>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_easy' data-difficulty='easy'>
-                      <div className='w-4 h-4 border border-black bg-yellow-400 mr-1' data-difficulty='easy'></div>
+                      <div className={`w-4 h-4 border border-black bg-[#98fb98] mr-1`} data-difficulty='easy'></div>
                       <span data-difficulty='easy'>쉬움</span>
                     </div>
                   </span>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal'>
-                      <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
+                      <div className='w-4 h-4 border border-black bg-[#F8D800] mr-1' data-difficulty='normal'></div>
                       <span data-difficulty='normal'>보통</span>
                     </div>
                   </span>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_hard' data-difficulty='hard'>
-                      <div className='w-4 h-4 border border-black bg-red-400 mr-1' data-difficulty='hard'></div>
+                      <div className='w-4 h-4 border border-black bg-[#EA5455] mr-1' data-difficulty='hard'></div>
                       <span data-difficulty='hard'>어려움</span>
                     </div>
                   </span>

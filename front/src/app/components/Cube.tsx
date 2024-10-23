@@ -33,10 +33,9 @@ export const CubePosition = {
 type CubePositionKeys = (typeof CubePosition)[keyof typeof CubePosition]; 
 
 export const CubeDiffculty = {
-  EASY : "#0396FF",
-  NORMAL : "#98fb98",
-  HARD : "#F8D800",
-  EXTRA : "#EA5455"
+  EASY : "#98fb98",
+  NORMAL : "#F8D800",
+  HARD : "#EA5455"
 } as const;
 export type CubeDiffcultyKeys = (typeof CubeDiffculty)[keyof typeof CubeDiffculty]; 
 

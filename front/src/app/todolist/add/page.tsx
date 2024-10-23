@@ -135,19 +135,19 @@ const page = () => {
                 <div className='w-full border h-14 border-black mt-3 flex items-center text-lg px-3'>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_easy' data-difficulty='easy' onClick={selectDifficulty}>
-                      <div className='w-4 h-4 border border-black bg-yellow-400 mr-1' data-difficulty='easy'></div>
+                      <div className='w-4 h-4 border border-black bg-[#98fb98] mr-1' data-difficulty='easy'></div>
                       <span data-difficulty='easy'>쉬움</span>
                     </div>
                   </span>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_normal' data-difficulty='normal' onClick={selectDifficulty}>
-                      <div className='w-4 h-4 border border-black bg-green-400 mr-1' data-difficulty='normal'></div>
+                      <div className='w-4 h-4 border border-black bg-[#F8D800] mr-1' data-difficulty='normal'></div>
                       <span data-difficulty='normal'>보통</span>
                     </div>
                   </span>
                   <span className='w-4/12'>
                     <div className='w-full h-10 flex items-center justify-center cursor-pointer' id='difficulty_hard' data-difficulty='hard' onClick={selectDifficulty}>
-                      <div className='w-4 h-4 border border-black bg-red-400 mr-1' data-difficulty='hard'></div>
+                      <div className='w-4 h-4 border border-black bg-[#EA5455] mr-1' data-difficulty='hard'></div>
                       <span data-difficulty='hard'>어려움</span>
                     </div>
                   </span>

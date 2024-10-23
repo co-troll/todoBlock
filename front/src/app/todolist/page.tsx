@@ -10,10 +10,11 @@ import Header from '../components/Header';
 import HeaderTab from '../components/HeaderTab';
 import Footer from '../components/Footer';
 import Board from '../moecules/Canvas';
+import { CubeDiffculty, CubeDiffcultyKeys } from '../components/Cube';
 
 const page = () => {
   
-  const [todolist, setTodolist] = useState<[{ content: string, dateArr: string[], difficulty: string }] | []>([]);
+  const [todolist, setTodolist] = useState<[{ content: string, dateArr: string[], difficulty: CubeDiffcultyKeys }] | []>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -46,7 +47,7 @@ const page = () => {
 
   // 로딩
   useEffect(() => {
-    const data = async () => {
+    const data = () => {
       try {
         setIsLoading(true);
         getTodoList.refetch();
@@ -59,10 +60,41 @@ const page = () => {
     data();
   }, [])
 
+  useEffect(()=>{
+    console.log(todolist)
+    getTodoList.refetch();
+  }, [todolist])
+
   // 할 일 리스트 뿌려주기
   useEffect(() => {
-    if (getTodoList.isFetched && (document.getElementById('todoBoxes') as HTMLDivElement)) {
-      setTodolist(getTodoList.data);
+    if (getTodoList.isFetched && !isLoading) {
+      let arr: [{content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] = [];
+      getTodoList.data.map((el: any) => {
+        switch(el.difficulty) {
+          case "easy":
+            arr.push({
+              content: el.content,
+              dateArr: el.dateArr,
+              difficulty: CubeDiffculty.EASY
+            })
+            break;
+          case "normal":
+            arr.push({
+              content: el.content,
+              dateArr: el.dateArr,
+              difficulty: CubeDiffculty.NORMAL
+            })
+            break;
+          case "hard":
+            arr.push({
+              content: el.content,
+              dateArr: el.dateArr,
+              difficulty: CubeDiffculty.HARD
+            })
+            break;
+        }
+      })
+      setTodolist(arr);
     }
   }, [getTodoList.data, isLoading]) // 데이터 가져왔을 때 + 추가에서 취소 눌렀을 때
 
@@ -81,7 +113,7 @@ const page = () => {
           complete: 'border-b-2 text-gray-300 text-sm'
         }} />
         <div className='w-full h-[500px] overflow-hidden'>
-          <Board />
+          <Board todolist={todolist} />
         </div>
         <Footer />
       </div>
