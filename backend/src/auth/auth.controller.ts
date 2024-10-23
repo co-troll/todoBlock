@@ -7,8 +7,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthenticationAuthDto } from './dto/authentication-auth.dto';
 import { FindUserDto } from './dto/find-user.dto';
 import { FindPasswordDto } from './dto/find-password.dto';
+import { VerifyAuthDto } from './dto/verify-auth.dto';
 
-@ApiTags('로그인 API')
+@ApiTags('로그인 · 인증 API')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -64,34 +65,43 @@ export class AuthController {
     res.redirect('http://localhost:3000/todolist');
   }
 
-    // 아이디 찾기
-    @ApiOperation({summary : "아이디찾기"})
-    @ApiResponse({status : 201, description : "핸드폰 번호를 보내면 아이디 전송"})
-    @Post('finduid')
-    async checkUid(
-      @Body() findUserDto : FindUserDto
-    ) {
-      return await this.authService.findUid(findUserDto.phoneNumber);
-    }
+  // 아이디 찾기
+  @ApiOperation({summary : "아이디찾기"})
+  @ApiResponse({status : 201, description : "핸드폰 번호를 보내면 아이디 전송"})
+  @Post('finduid')
+  async checkUid(
+    @Body() findUserDto : FindUserDto
+  ) {
+    return await this.authService.findUid(findUserDto.phoneNumber);
+  }
 
-    // 아이디랑 핸드폰 번호 보내면 둘이 일치하는지 보고 인증번호 보냄
-    @ApiOperation({summary : "비밀번호 찾기 "})
-    @ApiResponse({status : 201, description : "아이디랑 핸드폰 번호가 같으면 인증번호를 사용자에게 보냄"})
-    @Post('checkpassword')
-    async findUid (
-      @Body() findPasswordDto : FindPasswordDto
-    ) {
-      return this.authService.passwordCheck(findPasswordDto.uid, findPasswordDto.phoneNumber);
-    }
+  // 아이디랑 핸드폰 번호 보내면 둘이 일치하는지 보고 인증번호 보냄
+  @ApiOperation({summary : "비밀번호 찾기 "})
+  @ApiResponse({status : 201, description : "아이디랑 핸드폰 번호가 같으면 인증번호를 사용자에게 보냄"})
+  @Post('checkpassword')
+  async findUid (
+    @Body() findPasswordDto : FindPasswordDto
+  ) {
+    return this.authService.passwordCheck(findPasswordDto.uid, findPasswordDto.phoneNumber);
+  }
 
 
   // 문자 인증 요청
   @ApiOperation({summary : "문자인증 요청"})
   @Post('SMSAuthentication')
-  SMSAuthentication(
+  async SMSAuthentication(
     @Body() authenticationAuthDto : AuthenticationAuthDto,
   ) {
-    return this.authService.SMSAuthentication(authenticationAuthDto.number);
+    return await this.authService.SMSAuthentication(authenticationAuthDto.number);
+  }
+
+  // 문자 인증 확인
+  @ApiOperation({summary : "문자인증 확인"})
+  @Post('SMSVerify')
+  async SMSVerify(
+    @Body() verifyAuthDto : VerifyAuthDto,
+  ) {
+    return await this.authService.verifyCode(verifyAuthDto.phoneNumber, verifyAuthDto.inputCode);
   }
 
 }

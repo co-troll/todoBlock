@@ -7,11 +7,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from 'src/users/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { KakaoStratagy } from './kakao.strategy';
+import { SMSVerification } from './entities/auth.entity';
 
 @Module({
   imports : [
     ConfigModule.forRoot({isGlobal : false}),
-    SequelizeModule.forFeature([User]),
+    SequelizeModule.forFeature([User, SMSVerification]),
     JwtModule.register({
       secret : process.env.JWT_SECRET_KEY,
       signOptions : { expiresIn : '24h'},
