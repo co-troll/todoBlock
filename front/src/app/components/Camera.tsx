@@ -1,4 +1,4 @@
-import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import { OrbitControls, OrthographicCamera, SoftShadows } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { LegacyRef, RefAttributes, RefObject, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -10,10 +10,12 @@ const Camera = ({ clickScreenY, moveScreenY }: { clickScreenY: number, moveScree
 
     camera.rotation.set(THREE.MathUtils.degToRad(-26.5), THREE.MathUtils.degToRad(42), THREE.MathUtils.degToRad(18.5));
     useEffect(() => {
-        lastScreen > moveScreenY ? setPosition(position - 0.15) : setPosition(position + 0.15);
+        lastScreen > moveScreenY ? setPosition(position - 0.25) : setPosition(position + 0.25);
 
         setLastScreen(moveScreenY);
     }, [moveScreenY])
+
+    SoftShadows({});
    
     return (
         <OrthographicCamera
