@@ -16,7 +16,7 @@ const page = () => {
 
     return (
         <div className='flex flex-col w-full h-screen bg-white gap-3'>
-            <StackImg className={'w-full h-2/5 relative overflow-hidden'} />
+            <StackImg />
             <LoginForm />
             <div className='flex w-full px-6 justify-center text-base'><span id='findId' className='hover:cursor-pointer' onClick={toFind}>아이디 / 비밀번호 찾기 &gt;</span></div>
             <div className='flex w-full px-6'>
