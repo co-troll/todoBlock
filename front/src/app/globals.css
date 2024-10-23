@@ -26,7 +26,10 @@ body {
   }
 } */
 
-
+body {
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+}
 
 .search-icon {
   font-size: 2.2em;

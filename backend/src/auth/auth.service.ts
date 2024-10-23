@@ -55,7 +55,7 @@ export class AuthService {
     // 인증 코드 전송
     messageService.sendOne({
       to: phoneNumber,
-      from: process.env.from_Number,
+      from: process.env.FROM_NUMBER,
       text: `인증번호 : ${verificationCode}`
     }).then(res => console.log(res))
       .catch(err => console.error('Error sending SMS:', err));
@@ -86,8 +86,6 @@ export class AuthService {
 
   }
 
-
- 
    // 핸드폰 번호 기반으로 아이디 찾고 일치하면 인증 코드 보냄
   async passwordCheck(uid : string, phoneNumber : string) {
     const userid = await this.userService.findUserID(phoneNumber);
