@@ -10,7 +10,7 @@ async function bootstrap() {
   setupSwagger(app);
 
   app.enableCors({
-    origin : 'http://localhost:3000',
+    origin : ['http://localhost:3000', `http://${process.env.AWS_URL}:3000`],
     credentials : true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: 'Content-Type, Authorization',

@@ -21,7 +21,7 @@ const UpdateTodoBtn = ({content, dateArr, difficulty, paramId} : {content: strin
         console.log(err);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries(['viewTodo']);
+        // queryClient.invalidateQueries(['viewTodo']);
       }
     })
 

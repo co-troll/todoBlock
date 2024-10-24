@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import BackBtn from './BackBtn'
 import { useRouter } from 'next/navigation';
 import { useAtom } from 'jotai';
@@ -8,7 +8,7 @@ import { urlAtom } from '../state/Atom';
 
 const BackDiv = ({text}:{text?:string}) => {
 
-    const [url, setUrl] = useAtom(urlAtom)
+    const [url] = useAtom(urlAtom)
 
     const router = useRouter();
 

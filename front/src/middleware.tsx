@@ -9,4 +9,8 @@ export function middleware(request: { cookies: { has: (arg0: string) => any; }; 
   if (!auth && request.nextUrl.pathname.startsWith("/todolist")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+
+  if (auth && request.nextUrl.pathname.startsWith("/login")) {
+    return NextResponse.redirect(new URL("/todolist", request.url));
+  }
 }

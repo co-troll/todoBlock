@@ -4,11 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import styles from '../todolist/todolist.module.css'
-import { useRouter } from 'next/navigation'
 
 const Footer = () => {
-
-    const router = useRouter();
 
     return (
         <div className='w-full h-full flex  justify-between items-center overflow-hidden fixed bottom-0 pointer-events-none'>

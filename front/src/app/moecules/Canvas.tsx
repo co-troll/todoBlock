@@ -11,9 +11,9 @@ import Camera from "../components/Camera";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-export default function Board ({ todolist }: { todolist: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] }) {
+export default function Board ({ todolist }: { todolist: Array<{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}> }) {
   // const [bookList, setBookList] = useState<Array<{name: string, level: CubeDiffcultyKeys}>>([]);
-  const [bookList, setBookList] = useState<[{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] | []>([]);
+  const [bookList, setBookList] = useState<Array<{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}>>([]);
   const [books, setBooks] = useState<Array<JSX.Element>>([]);
   const [position, setPosition] = useState<number>(2);
   const [clickScreenY, setClickScreenY] = useState<number>(0);

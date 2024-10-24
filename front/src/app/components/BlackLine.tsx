@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BlackLine = ({width}: any) => {
+const BlackLine = ({width}: {width: string}) => {
     return (
         <div className=' h-[2px] bg-purple-900 absolute' style={{width: width}}>
 

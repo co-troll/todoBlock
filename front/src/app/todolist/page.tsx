@@ -14,7 +14,7 @@ import instance from '../instance';
 
 const page = () => {
   
-  const [todolist, setTodolist] = useState<[{ content: string, dateArr: string[], difficulty: CubeDiffcultyKeys }] | []>([]);
+  const [todolist, setTodolist] = useState<Array<{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}>>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -73,7 +73,7 @@ const page = () => {
   // 할 일 리스트 뿌려주기
   useEffect(() => {
     if (getTodoList.isFetched && !isLoading) {
-      const arr: [{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}] = [];
+      const arr: Array<{id: number, content: string, dateArr: string[], difficulty: CubeDiffcultyKeys}> = [];
       getTodoList.data.map((el: any) => {
         switch(el.difficulty) {
           case "easy":

@@ -1,6 +1,6 @@
-import { OrbitControls, OrthographicCamera, SoftShadows } from "@react-three/drei";
+import { OrthographicCamera, SoftShadows } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { LegacyRef, RefAttributes, RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import * as THREE from "three";
 
 const Camera = ({ clickScreenY, moveScreenY, initPosition }: { clickScreenY: number, moveScreenY: number, initPosition: number }) => {

@@ -103,7 +103,7 @@ const page = () => {
                         // console.log(data;
                         return (
                             <div onClick={()=>{
-                                queryClient.invalidateQueries(['viewTodo']);
+                                // queryClient.invalidateQueries(['viewTodo']);
                                 router.push(`/todolist/view/${data.id}`);
                             }}
                             key={index} className='w-full h-max border-black border-[1px] rounded-md list-none'>

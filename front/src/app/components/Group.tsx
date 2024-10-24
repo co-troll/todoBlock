@@ -1,13 +1,11 @@
 import * as THREE from "three";
 import Cube, { CubeLength, CubePosition, CubeType, CubeDiffculty, CubeDiffcultyKeys } from "./Cube";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { RefObject, useRef, useState } from "react";
-import { DragControls, OrbitControls, Text } from "@react-three/drei";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { useRef, useState } from "react";
+import { RigidBody } from "@react-three/rapier";
 
 const Book = ({ id, difficulty, position, name, parentFunc } : { id: number, difficulty : CubeDiffcultyKeys, position: number, name: string, parentFunc: (data: string) => void }) => {
   const group = useRef<THREE.Group>(null!);
-  const [hasFocus, setFocus] = useState(false);
   useFrame(() => {
     // group.current.rotation.y += 0.02;
   })

@@ -7,6 +7,7 @@ import Button from '../components/Button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import instance from '../instance'
+import { useQuery } from '@tanstack/react-query'
 
 const SignupForm = () => {
 
@@ -120,8 +121,7 @@ const SignupForm = () => {
         }
     }
 
-    const SignupHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const SignupHandler = () => {
 
         const uid = uidInput.current.value;
         const upw = upwInput.current.value;
@@ -153,16 +153,35 @@ const SignupForm = () => {
 
         if (Confirm) {
             try {
-                const response = await instance({
+                const responce = useQuery({
+                    queryKey: ['signup'],
+                    queryFn: async () => {
+                      const response = await instance({
+                        method: "post",
+                        url: 'users/signup',
+                        data: {
+                            uid: uid,
+                            upw: upw,
+                            phoneNumber: uPhone,
+                        }
+                      });
+                      console.log(response)
+                      return await response.data;
+                    },
+                    staleTime: 0,
+                    refetchOnWindowFocus: false,
+                    refetchOnMount: true,
+                  })
+                // const response = await instance({
                     
-                    method: "post", 
-                    url: 'users/signup', 
-                    data: {
-                        uid: uid,
-                        upw: upw,
-                        phoneNumber: uPhone,
-                    }
-                });
+                //     method: "post", 
+                //     url: 'users/signup', 
+                //     data: {
+                //         uid: uid,
+                //         upw: upw,
+                //         phoneNumber: uPhone,
+                //     }
+                // });
                 router.push('/signup/success')
 
             } catch (error: any) {

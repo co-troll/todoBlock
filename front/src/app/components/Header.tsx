@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import instance from '../instance'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
@@ -24,7 +24,7 @@ const Header = () => {
 
       
 
-  const handleLogout = async (event : any) => {
+  const handleLogout = async () => {
     await instance({
       method: "get",
       url: "/auth/logout"

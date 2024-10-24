@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [ ConfigModule.forRoot({isGlobal : true, envFilePath : '.env'}),
     SequelizeModule.forRoot({
       dialect : "mysql",
-      host : process.env.DEVELOP ? "localhost" : "???",
+      host : process.env.DEVELOP ? "localhost" : process.env.AWS_URL,
       port : 3306,
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,

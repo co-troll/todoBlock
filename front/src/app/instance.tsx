@@ -1,10 +1,9 @@
 import axios from "axios";
-require("dotenv").config();
 
-console.log(process.env.DEVELOP);
+console.log(process.env.NEXT_PUBLIC_DEVELOP);
 
 const instance = axios.create({
-    baseURL: "http://localhost:4000",
+    baseURL: process.env.NEXT_PUBLIC_DEVELOP ? "http://localhost:4000" : `http://${process.env.NEXT_PUBLIC_AWS_URL}:4000`,
     withCredentials: true
 })
 
